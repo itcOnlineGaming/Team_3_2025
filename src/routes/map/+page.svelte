@@ -118,11 +118,26 @@
 
 
 <style>
-  .container {
-    min-height: 100vh;
-    background: white;
-    padding: 20px;
-    font-family: Arial, sans-serif;
+  :global(body.dark) {
+    background: #222;
+    color: #eee;
+  }
+  :global(body.dark) h1,
+  :global(body.dark) .progress-info p,
+  :global(body.dark) .nav-button,
+  :global(body.dark) .control-button {
+    color: #eee;
+  }
+  :global(body.dark) .control-button,
+  :global(body.dark) .nav-button {
+    background: #333;
+    color: #fdfdfd;
+    border-color: #ebe9e1;
+  }
+  :global(body.dark) .control-button:hover,
+  :global(body.dark) .nav-button:hover {
+    background: #ffd700;
+    color: #222;
   }
 
   .navigation {
