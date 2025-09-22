@@ -13,8 +13,8 @@
 
 <div class="text-container">
   <div class="prompt-text">
-    {#each highlighted as {char, correct}, i}
-      <span style="color: {correct ? '#4caf50' : '#bbb'}">{char}</span>
+    {#each highlighted as {char, status}, i}
+      <span class="char {status}">{char}</span>
     {/each}
   </div>
   <input
