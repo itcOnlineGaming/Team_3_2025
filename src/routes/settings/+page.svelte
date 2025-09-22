@@ -33,16 +33,6 @@
 	<h1>Settings</h1>
 </header>
 
-<!-- Navigation Buttons -->
-<nav class="nav-bar">
-	<button><a href="/home">Home</a></button>
-	<button><a href="/map">Map</a></button>
-	<button><a href="/tasks">Tasks</a></button>
-	<button><a href="/shop">Shop</a></button>
-	<button><a href="/avatar">Avatar</a></button>
-	<button><a href="/settings">Settings</a></button>
-</nav>
-
 <div class="settings-section">
 	<div class="setting-item">
 		<label for="font-size">Font Size:</label>
@@ -79,35 +69,6 @@
 		padding: 1em 0;
 		text-align: center;
 		margin-bottom: 2em;
-	}
-	.nav-bar {
-		display: flex;
-		justify-content: center;
-		gap: 1em;
-		background: #1a237e;
-		padding: 1em 0;
-		border-radius: 10px;
-		margin-bottom: 2em;
-		box-shadow: 0 2px 12px rgba(26,35,126,0.08);
-	}
-	.nav-bar button {
-		background: #3949ab;
-		color: #fff;
-		border: none;
-		border-radius: 6px;
-		padding: 0.5em 1.2em;
-		font-size: 1em;
-		cursor: pointer;
-		transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-		box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-	}
-	.nav-bar button:hover {
-		background: #5c6bc0;
-		color: #ffd700;
-	}
-	.nav-bar a {
-		color: inherit;
-		text-decoration: none;
 	}
 	.settings-section {
 		display: flex;
