@@ -53,7 +53,7 @@
 	}
 	
 	main {
-		margin-top: 5em; /* Space for the fixed navigation */
+		margin-top: 5em;
 		padding: 1em;
 	}
 </style>
