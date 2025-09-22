@@ -22,6 +22,10 @@
   $: if (userInput === prompt) {
     goto('/map');
   }
+
+  $: promptWords = prompt.trim().split(/\s+/);
+  $: inputWords = userInput.trim().split(/\s+/);
+  $: completedWords = promptWords.filter((word, i) => inputWords[i] === word).length;
 </script>
 
 <div class="text-container">
@@ -39,4 +43,5 @@
     maxlength={prompt.length}
     placeholder=""
   />
+  <div class="word-counter">{completedWords}/{promptWords.length} words completed</div>
 </div>
