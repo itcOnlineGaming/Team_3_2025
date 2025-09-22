@@ -38,3 +38,17 @@
   padding: 8px 12px;
   box-sizing: border-box;
 }
+.char.completed {
+  color: #4caf50 !important;
+}
+.char.current {
+  color: #2196f3;
+  text-decoration: underline;
+}
+.char.incorrect {
+  color: #f44336;
+  background: #ffebee;
+}
+.char.pending {
+  color: #bbb;
+}
