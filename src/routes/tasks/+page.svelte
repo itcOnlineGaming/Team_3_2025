@@ -1,36 +1,32 @@
-<script>
+<script lang="ts">
 	import { onDestroy } from 'svelte';
+	import { goto } from '$app/navigation';
 	import { selectedOption, selectedText } from '$lib/stores.js';
-	
-	let selected = null;
-	let selectedWords = null;
-	
+
+	let selected: number | null = null;
+	let selectedWords: string | null = null;
+
 	// Define the text for each option
-	const optionTexts = {
+	const optionTexts: Record<number, string> = {
 		2: "Hello Bye",
 		4: "Hello Bye Test One",
 		6: "Hello Bye Test One Two Three"
 	};
-	
-	// Subscribe to both stores
-	const unsubscribeOption = selectedOption.subscribe(value => {
-		selected = value;
-	});
-	
+
+	// Subscribe to the selected text store
 	const unsubscribeText = selectedText.subscribe(value => {
 		selectedWords = value;
 	});
-	
-	// Clean up subscriptions when component is destroyed
+
+	// Clean up subscription when component is destroyed
 	onDestroy(() => {
-		unsubscribeOption();
 		unsubscribeText();
 	});
-	
-	function selectOption(option) {
+
+	function selectOption(option: number) {
 		selected = option;
 		selectedWords = optionTexts[option];
-		
+
 		// Update both stores
 		selectedOption.set(option);
 		selectedText.set(optionTexts[option]);
@@ -39,30 +35,30 @@
 
 <div class="form-container">
 	<h2>Select an Option</h2>
-	
+
 	<div class="button-group">
-		<button 
+		<button
 			class="option-button {selected === 2 ? 'selected' : ''}"
 			on:click={() => selectOption(2)}
 		>
 			2
 		</button>
-		
-		<button 
+
+		<button
 			class="option-button {selected === 4 ? 'selected' : ''}"
 			on:click={() => selectOption(4)}
 		>
 			4
 		</button>
-		
-		<button 
+
+		<button
 			class="option-button {selected === 6 ? 'selected' : ''}"
 			on:click={() => selectOption(6)}
 		>
 			6
 		</button>
 	</div>
-	
+
 	{#if selected}
 		<div class="selection-info">
 			<p class="selection-display">Selected: Option {selected}</p>
@@ -87,19 +83,19 @@
 		border-radius: 8px;
 		background-color: #f9f9f9;
 	}
-	
+
 	.form-container h2 {
 		margin-bottom: 1.5em;
 		color: #333;
 	}
-	
+
 	.button-group {
 		display: flex;
 		gap: 1em;
 		justify-content: center;
 		margin-bottom: 1.5em;
 	}
-	
+
 	.option-button {
 		width: 60px;
 		height: 60px;
@@ -111,32 +107,32 @@
 		cursor: pointer;
 		transition: all 0.2s ease;
 	}
-	
+
 	.option-button:hover {
 		border-color: #007bff;
 		background-color: #f8f9ff;
 	}
-	
+
 	.option-button.selected {
 		border-color: #007bff;
 		background-color: #007bff;
 		color: white;
 	}
-	
+
 	.selection-info {
 		background-color: #e8f4f8;
 		padding: 1em;
 		border-radius: 6px;
 		border-left: 4px solid #007bff;
 	}
-	
+
 	.selection-display {
 		font-size: 1.1em;
 		color: #333;
 		margin: 0 0 0.5em 0;
 		font-weight: bold;
 	}
-	
+
 	.text-display {
 		font-size: 1em;
 		color: #555;
