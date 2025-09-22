@@ -52,7 +52,14 @@
   }
 </script>
 
-<main class="container">  
+<main class="container">
+    <!-- Navigation -->
+  <nav class="navigation">
+    <div class="button-group">
+      <a href="/game" class="nav-button">Game Page</a>
+    </div>
+  </nav>
+
   <!-- Progress Path -->
   <div class="progress-section">
     <h1>Progress Path</h1>
@@ -116,6 +123,30 @@
     background: white;
     padding: 20px;
     font-family: Arial, sans-serif;
+  }
+
+  .navigation {
+    margin-bottom: 30px;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 2px;
+  }
+
+  .nav-button {
+    padding: 10px 20px;
+    background: white;
+    color: black;
+    text-decoration: none;
+    border: 2px solid black;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .nav-button:hover {
+    background: black;
+    color: white;
   }
 
   .progress-section {
