@@ -2,11 +2,11 @@
   let selectedMood = null;
 
   const moods = [
-    { id: 'notStressed', label: 'Not Stressed', color: '#9ACD32' },
-    { id: 'good', label: 'good', color: '#FFD700' },
-    { id: 'okay', label: 'Okay', color: '#FFA500' },
+    { id: 'stress', label: 'Stressed', color: '#E91E63' },
     { id: 'bad', label: 'little stressed', color: '#FF69B4' },
-    { id: 'stress', label: 'Stressed', color: '#E91E63' }
+    { id: 'okay', label: 'Okay', color: '#FFA500' },
+    { id: 'good', label: 'good', color: '#FFD700' },
+    { id: 'notStressed', label: 'Not Stressed', color: '#9ACD32' }
   ];
 
   function selectMood(moodId) {
@@ -18,7 +18,7 @@
   <h1>How Are You?</h1>
   
   <div class="spectrum-container">
-    <span class="spectrum-label">Not Stressed</span>
+    <span class="spectrum-label">Stressed</span>
     
     <div class="mood-buttons">
       {#each moods as mood}
@@ -32,7 +32,7 @@
       {/each}
     </div>
     
-    <span class="spectrum-label">Stressed</span>
+    <span class="spectrum-label">Not Stressed</span>
   </div>
 
   {#if selectedMood}
