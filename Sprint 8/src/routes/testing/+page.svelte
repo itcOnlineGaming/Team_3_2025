@@ -7,7 +7,7 @@
 	let rating4 = $state(0);
 
 	let checklistItems = $state([
-		{ id: '1', label: 'Complete project setup', done: false },
+		{ id: '1', label: 'Complete project setu', done: false },
 		{ id: '2', label: 'Write documentation', done: true },
 		{ id: '3', label: 'Create unit tests', done: false },
 		{ id: '4', label: 'Review code', done: false },
