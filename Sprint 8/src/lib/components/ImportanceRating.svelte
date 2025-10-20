@@ -88,12 +88,6 @@
 		justify-content: center;
 	}
 
-	.rating-box:hover {
-		border-color: #4caf50;
-		background: #f1f8f4;
-		transform: translateY(-2px);
-	}
-
 	.rating-box.selected {
 		border-color: #4caf50;
 		background: #4caf50;

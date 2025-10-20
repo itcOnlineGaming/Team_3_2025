@@ -48,7 +48,6 @@
 		max-width: 800px;
 		margin: 0 auto;
 		padding: 2rem;
-		background: linear-gradient(135deg, #ff8c00 0%, rgb(255, 251, 0) 100%);
 		min-height: 100vh;
 		color: white;
 		text-align: center;
@@ -58,7 +57,7 @@
 	.header h1 {
 		font-size: 3rem;
 		margin-bottom: 1rem;
-		color: #ffd700;
+		color: #000
 	}
 	
 	.header p {
@@ -83,6 +82,7 @@
 	/* Quote section */
 	.quote-section {
 		margin: 3rem 0;
+		color: #000;
 	}
 	
 	.quote-card {
@@ -91,6 +91,7 @@
 		padding: 2rem;
 		margin-bottom: 2rem;
 		border: 1px solid rgba(255, 255, 255, 0.2);
+		color: #000;
 	}
 	
 	.quote-card p {
@@ -98,6 +99,7 @@
 		font-size: 1.2rem;
 		line-height: 1.6;
 		margin: 0;
+		color: #000;
 	}
 	
 	/* Back button */
@@ -110,6 +112,7 @@
 		border-radius: 25px;
 		margin-top: 3rem;
 		transition: all 0.3s ease;
+		color: #000;
 	}
 	
 	.back-btn:hover {
