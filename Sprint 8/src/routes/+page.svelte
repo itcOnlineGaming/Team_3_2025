@@ -1,2 +1,4 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<h1>This is a demo. Tell us how you are feeling at the forum page</h1>
+<h1>Tell us how you are feeling at the forum page</h1>
+<h1>Go to input and tell us something you did today</h1>
+<h1>Rate how stressful that task was in the rating page</h1>
