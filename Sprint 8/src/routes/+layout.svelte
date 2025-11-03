@@ -1,3 +1,8 @@
+<a href="/forum">Go to forum</a>
+<a href="/input">Go to input</a>
+<a href="/Conclusion">Go to Conclusion</a>
+<a href="/testing">Go to testing</a>
+
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 
