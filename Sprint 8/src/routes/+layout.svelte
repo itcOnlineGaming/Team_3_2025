@@ -1,6 +1,5 @@
 <a href="/forum">Go to forum</a>
 <a href="/input">Go to input</a>
-<a href="/testing">Go to rating</a>
 <a href="/Conclusion">Go to Conclusion</a>
 
 <script lang="ts">
