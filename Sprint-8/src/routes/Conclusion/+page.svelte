@@ -1,4 +1,6 @@
 <script>
+	import { base } from '$app/paths';
+
 	// Simple array of quotes
 	const quotes = [
 		"No matter how weak or unworthy you feel... keep your heart burning, grit your teeth and move forward  - Kyojuro Rengoku's",

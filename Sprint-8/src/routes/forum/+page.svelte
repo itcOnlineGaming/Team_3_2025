@@ -1,6 +1,22 @@
-<script>
-  import { base } from '$app/paths';
-  let selectedMood = null;
+<script lang="ts">
+    // Component imports
+    import StressSlider from '$lib/components/StressSlider.svelte';
+    import { base } from '$app/paths';
+
+  // Text input component state
+  let text: string = '';
+  const charLimit: number = 50;
+
+  function handleChange(e: Event): void {
+    const target = e.target as HTMLInputElement;
+    if (target.value.length <= charLimit) {
+      text = target.value;
+    }
+  }
+
+
+  // Mood selection state
+  let selectedMood = $state<string | null>(null);
 
   const moods = [
     { id: 'stress', label: 'Stressed', color: '#E91E63' },
@@ -10,8 +26,17 @@
     { id: 'notStressed', label: 'Not Stressed', color: '#9ACD32' }
   ];
 
-  function selectMood(moodId) {
-    selectedMood = moodId;
+  function selectMood(moodLabel: string) {
+    selectedMood = moodLabel;
+  }
+
+
+  // Stress level state
+  let stressLevel = $state(3);
+  let rating1 = $state(3); 
+
+  function handleRatingChange(detail: { id: string; value: number }) { 
+    console.log('Rating changed:', detail);
   }
 </script>
 
@@ -39,10 +64,45 @@
   {#if selectedMood}
     <p class="feedback">You selected: <strong>{selectedMood}</strong></p>
   {/if}
-  
-  <div class="button-container">
-    <a href="${base}/meditation" class="submit-button">Submit</a>
+
+  <div class="card">
+    <h1 class="title">
+      What stressed you out?
+    </h1>
+    
+    <div class="form-group">
+      <input
+        type="text"
+        bind:value={text}
+        maxlength={charLimit}
+        placeholder="Type your response..."
+        on:change={handleChange}
+        class="input"
+      />
+      
+      <div class="counter">
+        {text.length} / {charLimit}
+      </div>
+
+    <section class="section">
+      <div class="demo-group">
+        <StressSlider
+            id="rating1"
+            label="What made you stressed?"
+            bind:value={rating1}
+            onchange={handleRatingChange}
+          />
+        <p class="value-display">Selected value: {rating1}</p>
+      </div>
+    </section>
+
+    </div>
   </div>
+
+  <div class="button-container">
+    <a href={`${base}/meditation`} class="submit-button">Submit</a>
+  </div>
+  
 </div>
 
 <style>
@@ -134,6 +194,47 @@
   .feedback strong {
     color: #333;
     text-transform: capitalize;
+  }
+
+    .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: #6366f1;
+  }
+
+  .counter {
+    text-align: right;
+    font-size: 0.875rem;
+    color: #6b7280;
   }
 
   @media (max-width: 600px) {

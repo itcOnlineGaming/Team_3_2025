@@ -1,12 +1,13 @@
-<a href="/Team_3_2025/forum">Go to forum</a>
-<a href="/Team_3_2025/input">Go to input</a>
-<a href="/Team_3_2025/Conclusion">Go to Conclusion</a>
-
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
-
+	import { base } from '$app/paths';
 	let { children } = $props();
 </script>
+
+<a href={`${base}/forum`}>Go to forum</a>
+<a href={`${base}/input`}>Go to input</a>
+<a href={`${base}/Conclusion`}>Go to conclusion</a>
+
 
 <svelte:head>
 	<link rel="icon" href={favicon} />

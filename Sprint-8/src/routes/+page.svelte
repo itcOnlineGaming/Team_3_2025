@@ -1,9 +1,13 @@
+<script lang="ts">
+  import { base } from '$app/paths';
+</script>
+
 <h1>This is a demo. Today you are using an app to reflect on your stress levels.</h1>
 <h1>Navigate through the pages, filling out each field.</h1>
 
 <div class="container">
   <div class="button-container">
-    <a href="/Team_3_2025/forum" class="submit-button">Start</a>
+    <a href={`${base}/forum`} class="submit-button">Submit</a>
   </div>
 </div>
 

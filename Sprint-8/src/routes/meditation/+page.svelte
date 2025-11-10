@@ -1,8 +1,14 @@
+<script lang="ts">
+  import { base } from '$app/paths';
+
+</script>
+
 <div class="container">
   <h1>This is the meditation page</h1>
 
+
   <div class="button-container">
-    <a href="/Team_3_2025/Conclusion" class="action-button">Skip</a>
+    <a href={`${base}/Conclusion`} class="action-button">Skip</a>
     <button class="action-button">Start</button>
   </div>
 </div>

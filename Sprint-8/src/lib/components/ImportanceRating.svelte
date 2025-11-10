@@ -20,10 +20,10 @@
 	{/if}
 	
 	<div class="rating-wrapper">
-		<span class="rating-text">Least Important</span>
+		<span class="rating-text">Stressful</span>
 		
 		<div class="rating-boxes">
-			{#each [1, 2, 3, 4, 5] as rating}
+			{#each [5, 4, 3, 2, 1] as rating}
 				<button
 					type="button"
 					class="rating-box {value === rating ? 'selected' : ''}"
@@ -36,7 +36,7 @@
 			{/each}
 		</div>
 		
-		<span class="rating-text">Most Important</span>
+		<span class="rating-text">Not Stressful</span>
 	</div>
 </div>
 
