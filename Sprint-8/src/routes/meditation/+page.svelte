@@ -1,15 +1,36 @@
 <script lang="ts">
   import { base } from '$app/paths';
+  import Meditation from '$lib/components/MeditationComponent/Meditation.svelte';
 
+  let started = false;
+  let completed = false;
+
+  function startMeditation() {
+    started = true;
+  }
+
+  function handleComplete() {
+    completed = true;
+  }
 </script>
 
 <div class="container">
   <h1>This is the meditation page</h1>
 
+  {#if started}
+    <Meditation on:complete={handleComplete} />
+  {/if}
 
   <div class="button-container">
     <a href={`${base}/Conclusion`} class="action-button">Skip</a>
-    <button class="action-button">Start</button>
+
+    {#if !started}
+      <button class="action-button" on:click={startMeditation}>Start</button>
+    {/if}
+
+    {#if completed}
+      <a href={`${base}/Conclusion`} class="action-button continue">Continue</a>
+    {/if}
   </div>
 </div>
 
@@ -58,5 +79,12 @@
   .action-button:hover {
     background-color: #45a049;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Continue button on bottom-right */
+  .continue {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
   }
 </style>
