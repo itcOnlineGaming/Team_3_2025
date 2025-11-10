@@ -36,7 +36,7 @@
 <div class="container">
   <div class="card">
     <h1 class="title">
-      What stressed you out?
+      Is there anything stressing you out?
     </h1>
     
     <div class="form-group">
