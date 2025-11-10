@@ -2,7 +2,7 @@
   <h1>This is the meditation page</h1>
 
   <div class="button-container">
-    <a href="/Conclusion" class="action-button">Skip</a>
+    <a href="/Team_3_2025/Conclusion" class="action-button">Skip</a>
     <button class="action-button">Start</button>
   </div>
 </div>

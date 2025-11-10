@@ -3,7 +3,7 @@
 
 <div class="container">
   <div class="button-container">
-    <a href="/forum" class="submit-button">Start</a>
+    <a href="/Team_3_2025/forum" class="submit-button">Start</a>
   </div>
 </div>
 

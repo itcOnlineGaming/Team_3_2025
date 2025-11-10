@@ -40,7 +40,7 @@
   {/if}
   
   <div class="button-container">
-    <a href="/meditation" class="submit-button">Submit</a>
+    <a href="/Team_3_2025/meditation" class="submit-button">Submit</a>
   </div>
 </div>
 
