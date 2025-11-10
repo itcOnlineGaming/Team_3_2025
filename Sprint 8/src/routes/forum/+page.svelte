@@ -38,9 +38,37 @@
   {#if selectedMood}
     <p class="feedback">You selected: <strong>{selectedMood}</strong></p>
   {/if}
+  
+  <div class="button-container">
+    <a href="/meditation" class="submit-button">Submit</a>
+  </div>
 </div>
 
 <style>
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100rem;
+    max-width: 600px;
+    margin-top: 3rem;
+  }
+
+  .submit-button {
+    padding: 1rem 2rem;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .submit-button:hover {
+    background-color: #45a049;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+
   .container {
     display: flex;
     flex-direction: column;

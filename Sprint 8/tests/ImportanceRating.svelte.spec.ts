@@ -1,9 +1,7 @@
 import { page } from '@vitest/browser/context';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
-import ImportanceRating from './ImportanceRating.svelte';
-
-describe('ImportanceRating', () => {
+import ImportanceRating from '$lib/components/ImportanceRating.svelte', () => {
 	it('renders all 5 rating boxes', async () => {
 		render(ImportanceRating, {
 			id: 'test-rating',
