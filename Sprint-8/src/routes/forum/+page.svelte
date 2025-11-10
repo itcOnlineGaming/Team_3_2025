@@ -1,4 +1,5 @@
 <script>
+  import { base } from '$app/paths';
   let selectedMood = null;
 
   const moods = [
@@ -40,7 +41,7 @@
   {/if}
   
   <div class="button-container">
-    <a href="/Team_3_2025/meditation" class="submit-button">Submit</a>
+    <a href="${base}/meditation" class="submit-button">Submit</a>
   </div>
 </div>
 
