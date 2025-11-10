@@ -152,5 +152,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: Sprint 8/playwright-report
+          path: "Sprint 8/playwright-report"
           if-no-files-found: ignore
