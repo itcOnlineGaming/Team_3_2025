@@ -2,6 +2,8 @@
     // Component imports
     import StressSlider from '$lib/components/StressSlider.svelte';
     import { base } from '$app/paths';
+    import { stressStore } from '$lib/stores/stressStore';
+    import { goto } from '$app/navigation';
 
   // Text input component state
   let text: string = '';
@@ -30,13 +32,22 @@
     selectedMood = moodLabel;
   }
 
-
   // Stress level state
-  let stressLevel = $state(3);
   let rating1 = $state(3); 
 
   function handleRatingChange(detail: { id: string; value: number }) { 
     console.log('Rating changed:', detail);
+  }
+
+    // Submit function to save to store and navigate
+  function handleSubmit() {
+    if (text && selectedMood) {
+      stressStore.addStressor(text, rating1, selectedMood);
+      // Navigate to graph page
+      goto(`${base}/graphPage`);
+    } else {
+      alert('Please fill in all fields before submitting');
+    }
   }
 </script>
 
@@ -99,8 +110,8 @@
     </div>
   </div>
 
-  <div class="button-container">
-    <a href={`${base}/meditation`} class="submit-button">Submit</a>
+ <div class="button-container">
+    <button on:click={handleSubmit} class="submit-button">Submit</button>
   </div>
   
 </div>
@@ -123,6 +134,7 @@
     font-weight: 600;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+    cursor: pointer;
   }
 
   .submit-button:hover {

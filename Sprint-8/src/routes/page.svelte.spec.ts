@@ -6,8 +6,8 @@ import Page from './+page.svelte';
 describe('/+page.svelte', () => {
 	it('should render h1', async () => {
 		render(Page);
-		
-		const heading = page.getByRole('heading', { level: 1 });
+
+		const heading = page.getByRole('heading', { level: 1, name: /This is a demo/i });
 		await expect.element(heading).toBeInTheDocument();
 	});
 });

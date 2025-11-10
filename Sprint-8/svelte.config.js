@@ -14,7 +14,7 @@ const config = {
 		adapter: adapter(),
 
 		paths: {
-			base: '/Team_3_2025'
+			base: process.env.VITEST ? '' : '/Team_3_2025'
 		}
 	},
 

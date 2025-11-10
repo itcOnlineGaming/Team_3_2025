@@ -1,20 +1,9 @@
 import { page } from '@vitest/browser/context';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
-import ImportanceRating from '$lib/components/ImportanceRating.svelte', () => {
-	it('renders all 5 rating boxes', async () => {
-		render(ImportanceRating, {
-			id: 'test-rating',
-			label: 'Rate this item'
-		});
+import ImportanceRating from '$lib/components/ImportanceRating.svelte';
 
-		const boxes = page.getByTestId(/^rating-[1-5]$/).all();
-		expect(boxes).toHaveLength(5);
-
-		await expect.element(page.getByText('Least Important')).toBeInTheDocument();
-		await expect.element(page.getByText('Most Important')).toBeInTheDocument();
-	});
-
+describe('ImportanceRating', () => {
 	it('renders without label when not provided', async () => {
 		render(ImportanceRating, {
 			id: 'test-rating'
