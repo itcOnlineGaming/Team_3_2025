@@ -3,8 +3,8 @@
 		text: string;
 		intensity: number; // 1-5 from the slider
 		mood?: string; // optional: the selected mood color
-		x?: number; // position for graph placement (percentage)
-		y?: number; // position for graph placement (percentage)
+		x?: number; // position for graph placement
+		y?: number; // position for graph placement
 	}
 
 	let { text, intensity, mood, x = 50, y = 50 }: Props = $props();
@@ -26,11 +26,13 @@
 
 <div 
 	class="bubble" 
-	style:width="{size}px"
-	style:height="{size}px"
-	style:background-color={bubbleColor}
-	style:left="{x}%"
-	style:top="{y}%"
+	style="
+		width: {size}px; 
+		height: {size}px; 
+		background-color: {bubbleColor};
+		left: {x}%;
+		top: {y}%;
+	"
 	title={text}
 >
 	<span class="bubble-text">{text}</span>
