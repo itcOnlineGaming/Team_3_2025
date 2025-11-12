@@ -104,7 +104,7 @@
 	
 	<div class="navigation">
 		<button on:click={openPopup}>Share Feedback</button>
-		<a href="/" class="back-btn">← Back to Home</a>
+		<a href="{base}/" class="back-btn">← Back to Home</a>
 	</div>
 </div>
 
