@@ -103,14 +103,14 @@
 	</div>
 	
 	<div class="navigation">
-		<button on:click={openPopup}>Share Feedback</button>
+		<!--<button on:click={openPopup}>Share Feedback</button>-->
 		<a href="https://forms.office.com/e/eBZMHfxRjq" target="_blank"><button class="back-btn">Feedback Form</button></a>
 		<a href="{base}/"><button class="back-btn">← Back to Home</button></a>
 	</div>
 </div>
 
 <!-- Simple popup modal -->
-{#if showPopup}
+<!--{#if showPopup}
 	<div>
 		<div>
 			<h3>Share Your Feedback</h3>
@@ -130,7 +130,7 @@
 			<button on:click={closePopup}>Cancel</button>
 		</div>
 	</div>
-{/if}
+{/if}-->
 
 <style>
 	/* Main container */
