@@ -104,7 +104,8 @@
 	
 	<div class="navigation">
 		<button on:click={openPopup}>Share Feedback</button>
-		<a href="{base}/" class="back-btn">← Back to Home</a>
+		<a href="https://forms.office.com/e/eBZMHfxRjq" target="_blank"><button class="back-btn">Feedback Form</button></a>
+		<a href="{base}/"><button class="back-btn">← Back to Home</button></a>
 	</div>
 </div>
 
