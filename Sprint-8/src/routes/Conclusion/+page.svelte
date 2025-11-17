@@ -86,8 +86,8 @@
 
 <div class="forum-conclusion">
 	<div class="header">
-		<h1>Forum Conclusion</h1>
-		<p>THANK YOU FOR SHARING YOUR THOUGHTS!</p>
+		<h1>Feedback</h1>
+		<p>Thank you for using our demo application. <br> Please let us know your thoughts down below!</p>
 	</div>
 	
 	<div class="main-content">
@@ -139,7 +139,6 @@
 		margin: 0 auto;
 		padding: 2rem;
 		min-height: 100vh;
-		color: white;
 		text-align: center;
 	}
 	
