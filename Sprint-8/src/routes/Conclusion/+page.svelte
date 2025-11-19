@@ -140,47 +140,94 @@
 		padding: 2rem;
 		min-height: 100vh;
 		text-align: center;
+		background-image: url('/Images/background art.png');
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		position: relative;
+		overflow: hidden;
 	}
 	
 	/* Header styles */
 	.header h1 {
 		font-size: 3rem;
 		margin-bottom: 1rem;
-		color: #000
+		color: #000;
+		font-weight: 700;
+		position: relative;
+		z-index: 2;
 	}
 	
 	.header p {
 		font-size: 1.2rem;
 		margin-bottom: 3rem;
+		color: #333;
+		position: relative;
+		z-index: 2;
+	}
+	
+	/* Main content */
+	.main-content {
+		position: relative;
+		z-index: 2;
 	}
 	
 	/* Big smiley button */
+	.smiley-container {
+		position: relative;
+		margin: 2rem 0;
+	}
+	
 	.big-smiley {
 		font-size: 8rem;
-		background: none;
+		background: linear-gradient(135deg, #d4723c 0%, #c8632e 100%);
 		border: none;
 		cursor: pointer;
-		margin: 2rem 0;
+		width: 200px;
+		height: 200px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto;
 		transition: transform 0.3s ease;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+		color: white;
+	}
+	
+	.big-smiley::before {
+		content: '';
+		position: absolute;
+		bottom: -80px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 120%;
+		height: 60px;
+		background: radial-gradient(ellipse at center, rgba(255, 255, 200, 0.5) 0%, transparent 70%);
+		filter: blur(20px);
+		z-index: -1;
 	}
 	
 	.big-smiley:hover {
-		transform: scale(1.1);
+		transform: scale(1.05);
 	}
 	
 	/* Quote section */
 	.quote-section {
-		margin: 3rem 0;
+		margin: 4rem 0;
 		color: #000;
+		position: relative;
+		z-index: 2;
 	}
 	
 	.quote-card {
-		background: rgba(255, 255, 255, 0.1);
-		border-radius: 15px;
+		background: rgba(255, 255, 255, 0.2);
+		backdrop-filter: blur(10px);
+		border-radius: 20px;
 		padding: 2rem;
 		margin-bottom: 2rem;
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		color: #000;
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 	}
 	
 	.quote-card p {
@@ -191,21 +238,35 @@
 		color: #000;
 	}
 	
+	/* Navigation */
+	.navigation {
+		position: relative;
+		z-index: 10;
+		display: flex;
+		gap: 1rem;
+		justify-content: center;
+		flex-wrap: wrap;
+		margin-top: 3rem;
+	}
+	
 	/* Back button */
 	.back-btn {
 		display: inline-block;
 		padding: 1rem 2rem;
-		background: rgba(255, 255, 255, 0.2);
-		color: white;
+		background: rgba(245, 213, 213, 0.9);
+		color: #333;
 		text-decoration: none;
-		border-radius: 25px;
-		margin-top: 3rem;
+		border-radius: 50px;
+		border: none;
+		cursor: pointer;
 		transition: all 0.3s ease;
-		color: #000;
+		font-weight: 600;
+		font-size: 1.1rem;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 	}
 	
 	.back-btn:hover {
-		background: rgba(255, 255, 255, 0.3);
 		transform: translateY(-2px);
+		box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 	}
 </style>

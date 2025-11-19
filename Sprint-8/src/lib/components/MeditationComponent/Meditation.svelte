@@ -7,61 +7,137 @@
   let totalElapsed = 0;
   let phaseIndex = 0;
   let interval;
+  let circleScale = 1;
+  let animationFrame;
 
   const phases = ['Breathe in', 'Hold', 'Breathe out', 'Hold'];
+  const phaseDurations = [4, 2, 4, 2]; // seconds per phase (breathe in, hold, breathe out, hold)
+
+  // Easing function for natural breathing feel
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
 
   // Start timer
   onMount(() => {
-    const phaseInterval = 4; // seconds per phase
     const totalDuration = 120; // 2 minutes
+    const startTime = Date.now();
+    let phaseStartTime = 0;
 
-    interval = setInterval(() => {
-      totalElapsed += 1;
+    function animate() {
+      const elapsed = (Date.now() - startTime) / 1000;
+      totalElapsed = Math.floor(elapsed);
       timeLeft = totalDuration - totalElapsed;
 
-      // Change phase every 4 seconds
-      if (totalElapsed % phaseInterval === 0) {
-        phaseIndex = (phaseIndex + 1) % phases.length;
+      // Calculate current phase
+      let cycleTime = elapsed % 12; // 12 seconds per full cycle
+      let newPhaseIndex = 0;
+      let phaseElapsed = cycleTime;
+      
+      for (let i = 0; i < phaseDurations.length; i++) {
+        if (phaseElapsed < phaseDurations[i]) {
+          newPhaseIndex = i;
+          break;
+        }
+        phaseElapsed -= phaseDurations[i];
+      }
+
+      if (newPhaseIndex !== phaseIndex) {
+        phaseIndex = newPhaseIndex;
         phase = phases[phaseIndex];
       }
 
-      if (timeLeft <= 0) {
-        clearInterval(interval);
-        phase = 'Session complete';
-        dispatch('complete'); // notify parent
+      // Smooth animation with easing
+      const phaseProgress = phaseElapsed / phaseDurations[phaseIndex];
+      const easedProgress = easeInOutCubic(phaseProgress);
+
+      if (phase === 'Breathe in') {
+        circleScale = 1 + (easedProgress * 0.6); // Expand from 1 to 1.6
+      } else if (phase === 'Breathe out') {
+        circleScale = 1.6 - (easedProgress * 0.6); // Contract from 1.6 to 1
+      } else if (phase === 'Hold' && phaseIndex === 1) {
+        circleScale = 1.6; // Hold expanded
+      } else {
+        circleScale = 1; // Hold contracted
       }
-    }, 1000);
+
+      if (timeLeft <= 0) {
+        cancelAnimationFrame(animationFrame);
+        phase = 'Session complete';
+        dispatch('complete');
+        return;
+      }
+
+      animationFrame = requestAnimationFrame(animate);
+    }
+
+    animationFrame = requestAnimationFrame(animate);
   });
 
   onDestroy(() => {
-    clearInterval(interval);
+    if (interval) clearInterval(interval);
+    if (animationFrame) cancelAnimationFrame(animationFrame);
   });
 </script>
 
 <div class="meditation">
+  <div class="breathing-circle" style="transform: scale({circleScale});">
+    <div class="inner-circle"></div>
+  </div>
+  
   <h2>{phase}</h2>
 
   {#if timeLeft > 0}
-    <p>Time remaining: {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}</p>
+    <p class="timer">Time remaining: {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}</p>
   {/if}
 </div>
 
 <style>
   .meditation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    font-size: 2rem;
-    margin-top: 2rem;
+    min-height: 60vh;
+    position: relative;
+  }
+
+  .breathing-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(15px);
+    border: 3px solid rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 0 60px rgba(255, 255, 255, 0.2);
+    margin-bottom: 3rem;
+    will-change: transform;
+  }
+
+  .inner-circle {
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    border: 2px solid rgba(255, 255, 255, 0.3);
   }
 
   h2 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 1rem;
     color: #2c3e50;
-    transition: opacity 0.5s ease;
+    font-weight: 600;
+    text-transform: lowercase;
   }
 
-  p {
-    font-size: 1.5rem;
+  .timer {
+    font-size: 1.2rem;
     color: #555;
+    opacity: 0.8;
   }
 </style>
