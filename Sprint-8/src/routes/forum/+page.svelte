@@ -1,49 +1,45 @@
 <script lang="ts">
-    // Component imports
-    import StressSlider from '$lib/components/StressSlider.svelte';
     import { base } from '$app/paths';
     import { stressStore } from '$lib/stores/stressStore';
     import { goto } from '$app/navigation';
 
-  // Text input component state
-  let text: string = '';
+  let text = $state<string>('');
   const charLimit: number = 50;
 
-  function handleChange(e: Event): void {
-    const target = e.target as HTMLInputElement;
-    if (target.value.length <= charLimit) {
-      text = target.value;
-    }
-  }
-
-
-  // Mood selection state
   let selectedMood = $state<string | null>(null);
+  let selectedIntensity = $state<number>(3);
 
   const moods = [
-    { id: 'stress', label: 'Stressed', color: '#E91E63' },
-    { id: 'bad', label: 'little stressed', color: '#FF69B4' },
-    { id: 'okay', label: 'Okay', color: '#FFA500' },
-    { id: 'good', label: 'good', color: '#FFD700' },
-    { id: 'notStressed', label: 'Not Stressed', color: '#9ACD32' }
+    { id: 'stress', label: 'Stressed', color: '#E91E63', intensity: 5 },
+    { id: 'bad', label: 'little stressed', color: '#FF69B4', intensity: 4 },
+    { id: 'okay', label: 'Okay', color: '#FFA500', intensity: 3 },
+    { id: 'good', label: 'good', color: '#FFD700', intensity: 2 },
+    { id: 'notStressed', label: 'Not Stressed', color: '#9ACD32', intensity: 1 }
   ];
 
-  function selectMood(moodLabel: string) {
+  // Derived question text based on selected mood
+  let questionText = $derived.by(() => {
+    if (!selectedMood) return 'What\'s on your mind?';
+    
+    const mood = selectedMood.toLowerCase();
+    if (mood === 'stressed' || mood === 'little stressed') {
+      return 'What stressed you out?';
+    } else if (mood === 'okay') {
+      return 'What\'s on your mind?';
+    } else if (mood === 'good' || mood === 'not stressed') {
+      return 'What made you happy?';
+    }
+    return 'What\'s on your mind?';
+  });
+
+  function selectMood(moodLabel: string, intensity: number) {
     selectedMood = moodLabel;
+    selectedIntensity = intensity;
   }
 
-  // Stress level state
-  let rating1 = $state(3); 
-
-  function handleRatingChange(detail: { id: string; value: number }) { 
-    console.log('Rating changed:', detail);
-  }
-
-    // Submit function to save to store and navigate
   function handleSubmit() {
     if (text && selectedMood) {
-      stressStore.addStressor(text, rating1, selectedMood);
-      // Navigate to graph page
+      stressStore.addStressor(text, selectedIntensity, selectedMood);
       goto(`${base}/graphPage`);
     } else {
       alert('Please fill in all fields before submitting');
@@ -63,7 +59,7 @@
           class="mood-button"
           class:selected={selectedMood === mood.label}
           style="--mood-color: {mood.color}"
-          on:click={() => selectMood(mood.label)}
+          onclick={() => selectMood(mood.label, mood.intensity)}
         >
         </button>
       {/each}
@@ -78,7 +74,7 @@
 
   <div class="card">
     <h1 class="title">
-      What stressed you out?
+      {questionText}
     </h1>
     
     <div class="form-group">
@@ -87,31 +83,18 @@
         bind:value={text}
         maxlength={charLimit}
         placeholder="Type your response..."
-        on:change={handleChange}
+        onchange={handleChange}
         class="input"
       />
       
       <div class="counter">
         {text.length} / {charLimit}
       </div>
-
-    <section class="section">
-      <div class="demo-group">
-        <StressSlider
-            id="rating1"
-            label="What made you stressed?"
-            bind:value={rating1}
-            onchange={handleRatingChange}
-          />
-        <p class="value-display">Selected value: {rating1}</p>
-      </div>
-    </section>
-
     </div>
   </div>
 
- <div class="button-container">
-    <button on:click={handleSubmit} class="submit-button">Submit</button>
+  <div class="button-container">
+    <button onclick={handleSubmit} class="submit-button">Submit</button>
   </div>
   
 </div>
@@ -120,7 +103,7 @@
   .button-container {
     display: flex;
     justify-content: flex-end;
-    width: 100rem;
+    width: 100%;
     max-width: 600px;
     margin-top: 3rem;
   }
@@ -135,6 +118,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     cursor: pointer;
+    border: none;
   }
 
   .submit-button:hover {
@@ -191,6 +175,11 @@
     height: 80px;
     cursor: pointer;
     position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .mood-button:hover {
+    transform: scale(1.1);
   }
 
   .mood-button.selected {
@@ -208,11 +197,14 @@
     text-transform: capitalize;
   }
 
-    .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+  .card {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
   }
 
   .title {
@@ -230,7 +222,7 @@
   }
 
   .input {
-    width: 100%;
+    width: 95%;
     padding: 0.75rem 1rem;
     border: 2px solid #d1d5db;
     border-radius: 0.5rem;
