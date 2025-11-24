@@ -21,7 +21,7 @@
         <h1>You seem stressed</h1>
         <p>Its important to stay mindful, lets take a moment to meditae</p>
         <div class="meditation-card">
-          <h2>5-10 min<br>meditaion</h2>
+          <h2>2 Minute<br>Meditation</h2>
         </div>
       </div>
     {:else}
@@ -114,7 +114,6 @@
     font-weight: 600;
     text-align: center;
     line-height: 1.3;
-    text-transform: lowercase;
   }
 
   .button-container {

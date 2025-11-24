@@ -135,7 +135,7 @@
 <style>
 	/* Main container */
 	.forum-conclusion {
-		max-width: 800px;
+		
 		margin: 0 auto;
 		padding: 2rem;
 		min-height: 100vh;
@@ -222,6 +222,8 @@
 		color: #000;
 		position: relative;
 		z-index: 2;
+		padding-left: 20rem;
+		padding-right: 20rem;
 	}
 	
 	.quote-card {

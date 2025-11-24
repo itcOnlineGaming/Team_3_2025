@@ -9,7 +9,7 @@
     where we design and develop an interface under different SRL headings. 
     Our group is working under the heading of emotional management.</p>
   <h1>Emotional App Prototype</h1>
-  <p>Track your emotional well-being with our app. Log how you're feeling, visualize your mood patterns through interactive graphs, 
+  <p>Track your emotional well-being with our app. Log how you're feeling, visualize your stress patterns through interactive graphs, 
      and access a guided meditation session when you need to relax. <br><br>
      We'd love your feedback!<br> Please test our prototype and complete the short survey at the end. <br>
      Click below to begin your journey.</p>
@@ -47,7 +47,7 @@
 
   .submit-button {
     padding: 1rem 2rem;
-    background-color: #4CAF50;
+    background-color: #e8a87c;
     color: white;
     text-decoration: none;
     border-radius: 8px;
@@ -57,7 +57,8 @@
   }
 
   .submit-button:hover {
-    background-color: #45a049;
+    background-color: #d89968;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
   }
 </style>

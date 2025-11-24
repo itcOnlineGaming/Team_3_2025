@@ -132,7 +132,6 @@
     margin-bottom: 1rem;
     color: #2c3e50;
     font-weight: 600;
-    text-transform: lowercase;
   }
 
   .timer {
