@@ -122,7 +122,7 @@
 
   .submit-button {
     padding: 1rem 2rem;
-    background-color: #4CAF50;
+    background-color: #e8a87c;
     color: white;
     text-decoration: none;
     border-radius: 8px;
@@ -134,8 +134,10 @@
   }
 
   .submit-button:hover {
-    background-color: #45a049;
+    background-color: #d89968;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+
   }
 
   .container {
