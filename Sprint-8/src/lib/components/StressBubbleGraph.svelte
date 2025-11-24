@@ -57,7 +57,7 @@
 				<p>No stressors tracked yet today</p>
 			</div>
 		{:else}
-			{#each stressors as stressor, i}
+			{#each stressors as stressor, i (stressor.id)}
 				<StressBubble
 					text={stressor.text}
 					intensity={stressor.intensity}
