@@ -24,6 +24,9 @@ function createStressStore() {
 			};
 			update(stressors => [...stressors, newStressor]);
 		},
+		remove: (id: string) => {
+			update(stressors => stressors.filter(s => s.id !== id));
+		},
 		clearToday: () => set([]),
 		reset: () => set([])
 	};

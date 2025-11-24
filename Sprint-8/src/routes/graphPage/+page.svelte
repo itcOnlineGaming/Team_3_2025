@@ -3,17 +3,24 @@
 	import { stressStore } from '$lib/stores/stressStore';
 	import { base } from '$app/paths';
 
-	// Subscribe to the store
 	let stressors = $state($stressStore);
+	
+	function handleRemoveStressor(id: string) {
+		stressStore.remove(id);
+	}
 </script>
 
 <div class="page-container">
-	<StressBubbleGraph stressors={$stressStore} />
+	<StressBubbleGraph 
+		stressors={$stressStore} 
+		onRemove={handleRemoveStressor}
+	/>
 
 	<div class="action-buttons">
-		<a href={`${base}/forum`} class="btn btn-secondary">Add Another Stressor</a>
-		<button on:click={() => stressStore.clearToday()} class="btn btn-danger">Clear All</button>
-    	<a href={`${base}/meditation`} class="submit-button">Submit</a>
+		<a href={`${base}/forum`} class="add-button" title="Add Another Stressor">
+			<span class="plus-icon">+</span>
+		</a>
+		<a href={`${base}/meditation`} class="next-button">Next page</a>
 	</div>
 </div>
 
@@ -21,55 +28,61 @@
 	.page-container {
 		min-height: 100vh;
 		padding: 2rem;
-		background: #f5f7fa;
+		background: #fef5ee;
+		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
-
-	.submit-button {
-    padding: 1rem 2rem;
-    background-color: #4CAF50;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    cursor: pointer;
-  	}
-
 
 	.action-buttons {
 		display: flex;
 		justify-content: center;
-		gap: 1rem;
+		align-items: center;
+		gap: 1.5rem;
 		margin-top: 2rem;
 	}
 
-	.btn {
-		padding: 0.75rem 1.5rem;
-		border-radius: 8px;
-		font-weight: 600;
+	.add-button {
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+		background-color: #e8a87c;
+		color: white;
 		text-decoration: none;
-		border: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		cursor: pointer;
 		transition: all 0.3s ease;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		border: none;
 	}
 
-	.btn-secondary {
-		background-color: #6366f1;
+	.add-button:hover {
+		background-color: #d89968;
+		transform: scale(1.1);
+	}
+
+	.plus-icon {
+		font-size: 2rem;
+		font-weight: 300;
+		line-height: 1;
+	}
+
+	.next-button {
+		padding: 1rem 2.5rem;
+		background-color: #e8a87c;
 		color: white;
+		text-decoration: none;
+		border-radius: 25px;
+		font-weight: 500;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		transition: all 0.3s ease;
+		cursor: pointer;
+		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 
-	.btn-secondary:hover {
-		background-color: #4f46e5;
-	}
-
-	.btn-danger {
-		background-color: #ef4444;
-		color: white;
-	}
-
-	.btn-danger:hover {
-		background-color: #dc2626;
+	.next-button:hover {
+		background-color: #d89968;
+		transform: translateY(-2px);
+		box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 	}
 </style>

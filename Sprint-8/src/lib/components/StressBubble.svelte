@@ -5,9 +5,10 @@
 		mood?: string; // optional: the selected mood color
 		x?: number; // position for graph placement
 		y?: number; // position for graph placement
+		onclick?: () => void;
 	}
 
-	let { text, intensity, mood, x = 50, y = 50 }: Props = $props();
+	let { text, intensity, mood, x = 50, y = 50, onclick }: Props = $props();
 
 	// Calculate bubble size based on intensity (1-5 scale)
 	const size = intensity * 20 + 40; // 60px to 140px range
@@ -34,6 +35,7 @@
 		top: {y}%;
 	"
 	title={text}
+	onclick={onclick}
 >
 	<span class="bubble-text">{text}</span>
 	<span class="intensity-badge">{intensity}</span>

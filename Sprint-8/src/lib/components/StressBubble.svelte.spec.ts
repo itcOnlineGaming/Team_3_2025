@@ -17,7 +17,7 @@ describe('StressBubbleGraph', () => {
 			stressors: []
 		});
 
-		await expect.element(page.getByText('Your Stress Map')).toBeInTheDocument();
+		await expect.element(page.getByText('Bubble Graph')).toBeInTheDocument();
 	});
 
 	it('displays formatted date', async () => {
@@ -44,20 +44,6 @@ describe('StressBubbleGraph', () => {
 		await expect.element(dateElement).toBeInTheDocument();
 	});
 
-	it('renders single stressor as a bubble', async () => {
-		const { container } = render(StressBubbleGraph, {
-			stressors: [
-				{ id: '1', text: 'Work deadline', intensity: 3 }
-			]
-		});
-
-		await expect.element(page.getByText('Work deadline')).toBeInTheDocument();
-
-		// Query the rendered DOM directly to locate the bubble element
-		const bubble = container.querySelector('.bubble');
-		expect(bubble).toBeTruthy();
-	});
-
 	it('renders multiple stressors as bubbles', async () => {
 		render(StressBubbleGraph, {
 			stressors: [
@@ -78,9 +64,9 @@ describe('StressBubbleGraph', () => {
 		});
 
 		await expect.element(page.getByText('Stress Intensity')).toBeInTheDocument();
-		await expect.element(page.getByText('1 - Not Stressed')).toBeInTheDocument();
-		await expect.element(page.getByText('3 - Moderate')).toBeInTheDocument();
-		await expect.element(page.getByText('5 - Very Stressed')).toBeInTheDocument();
+		await expect.element(page.getByText('Stressed')).toBeInTheDocument();
+		await expect.element(page.getByText('Moderate')).toBeInTheDocument();
+		await expect.element(page.getByText('Calm')).toBeInTheDocument();
 	});
 
 	it('displays legend note about bubble size', async () => {
@@ -88,7 +74,7 @@ describe('StressBubbleGraph', () => {
 			stressors: []
 		});
 
-		await expect.element(page.getByText('Bubble size reflects intensity level')).toBeInTheDocument();
+		await expect.element(page.getByText('Size represents stress intensity')).toBeInTheDocument();
 	});
 
 	it('hides empty state when stressors are present', async () => {
@@ -136,7 +122,6 @@ describe('StressBubbleGraph', () => {
 			]
 		});
 
-		// Query the bubbles directly from the container to avoid legend conflicts
 		const bubbles = container.querySelectorAll('.bubble');
 		expect(bubbles.length).toBe(3);
 		
@@ -157,10 +142,10 @@ describe('StressBubbleGraph', () => {
 		const bubbles = container.querySelectorAll('.bubble') as NodeListOf<HTMLElement>;
 		
 		bubbles.forEach((bubble) => {
-			// Check inline styles instead of computed styles
-			const left = parseFloat(bubble.style.left);
-			const top = parseFloat(bubble.style.top);
-			
+			// Read inline percent styles set by the component (e.g. "75%")
+			const left = parseFloat(bubble.style.left || '0');
+			const top = parseFloat(bubble.style.top || '0');
+
 			// Positions should be within 15-85% range (considering 15% margin)
 			expect(left).toBeGreaterThanOrEqual(15);
 			expect(left).toBeLessThanOrEqual(85);
@@ -182,8 +167,8 @@ describe('StressBubbleGraph', () => {
 
 		const bubbles1 = Array.from(container1.querySelectorAll('.bubble') as NodeListOf<HTMLElement>);
 		const positions1 = bubbles1.map(b => ({
-			left: b.style.left,
-			top: b.style.top
+			left: window.getComputedStyle(b).left,
+			top: window.getComputedStyle(b).top
 		}));
 
 		// Positions should be deterministic based on the position generation algorithm
@@ -192,5 +177,24 @@ describe('StressBubbleGraph', () => {
 			expect(pos.left).toBeTruthy();
 			expect(pos.top).toBeTruthy();
 		});
+	});
+
+	it('calls onRemove when bubble is clicked', async () => {
+		let removedId = '';
+		const onRemove = (id: string) => {
+			removedId = id;
+		};
+
+		render(StressBubbleGraph, {
+			stressors: [
+				{ id: 'test-1', text: 'Test stressor', intensity: 3 }
+			],
+			onRemove
+		});
+
+		const bubble = page.getByText('Test stressor');
+		await bubble.click();
+
+		expect(removedId).toBe('test-1');
 	});
 });

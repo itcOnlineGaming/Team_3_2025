@@ -11,18 +11,17 @@
 	interface Props {
 		stressors: Stressor[];
 		date?: Date;
+		onRemove?: (id: string) => void;
 	}
 
-	let { stressors = [], date = new Date() }: Props = $props();
+	let { stressors = [], date = new Date(), onRemove }: Props = $props();
 
 	// Generate random but consistent positions for bubbles
-	// Using a simple layout algorithm to avoid overlap
 	function generatePositions(count: number) {
 		const positions = [];
-		const margin = 15; // margin from edges
+		const margin = 15;
 		
 		for (let i = 0; i < count; i++) {
-			// Simple grid-like placement with some randomness
 			const angle = (i / count) * Math.PI * 2;
 			const radius = 25 + (i % 2) * 15;
 			const x = 50 + Math.cos(angle) * radius;
@@ -38,11 +37,17 @@
 	}
 
 	const positions = $derived(generatePositions(stressors.length));
+	
+	function handleBubbleClick(id: string) {
+		if (onRemove) {
+			onRemove(id);
+		}
+	}
 </script>
 
 <div class="graph-container">
 	<div class="graph-header">
-		<h2>Your Stress Map</h2>
+		<h2>Bubble Graph</h2>
 		<p class="date">{date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
 	</div>
 
@@ -59,6 +64,7 @@
 					mood={stressor.mood}
 					x={positions[i].x}
 					y={positions[i].y}
+					onclick={() => handleBubbleClick(stressor.id)}
 				/>
 			{/each}
 		{/if}
@@ -68,19 +74,19 @@
 		<h3>Stress Intensity</h3>
 		<div class="legend-items">
 			<div class="legend-item">
-				<div class="legend-bubble" style="background-color: #9ACD32;"></div>
-				<span>1 - Not Stressed</span>
+				<div class="legend-bubble stressed"></div>
+				<span>Stressed</span>
 			</div>
 			<div class="legend-item">
-				<div class="legend-bubble" style="background-color: #FFA500;"></div>
-				<span>3 - Moderate</span>
+				<div class="legend-bubble moderate"></div>
+				<span>Moderate</span>
 			</div>
 			<div class="legend-item">
-				<div class="legend-bubble" style="background-color: #E91E63;"></div>
-				<span>5 - Very Stressed</span>
+				<div class="legend-bubble calm"></div>
+				<span>Calm</span>
 			</div>
 		</div>
-		<p class="legend-note">Bubble size reflects intensity level</p>
+		<p class="legend-note">Size represents stress intensity</p>
 	</div>
 </div>
 
@@ -89,9 +95,9 @@
 		max-width: 800px;
 		margin: 2rem auto;
 		padding: 2rem;
-		background: white;
+		background: #f5e6dc;
 		border-radius: 12px;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 
 	.graph-header {
@@ -101,21 +107,26 @@
 
 	.graph-header h2 {
 		font-size: 1.75rem;
-		color: #333;
+		color: #2c2c2c;
 		margin-bottom: 0.5rem;
+		font-weight: 600;
+		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 
 	.date {
-		color: #666;
+		color: #6c5545;
 		font-size: 0.95rem;
+		font-style: italic;
+		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 
 	.bubble-area {
 		position: relative;
 		width: 100%;
 		height: 500px;
-		background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-		border-radius: 12px;
+		background: #fef5ee;
+		border: 3px solid #e8a87c;
+		border-radius: 20px;
 		margin-bottom: 2rem;
 		overflow: hidden;
 	}
@@ -127,44 +138,61 @@
 		height: 100%;
 		color: #999;
 		font-size: 1.1rem;
+		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 
 	.legend {
 		padding: 1rem;
-		background: #f9fafb;
+		background: transparent;
 		border-radius: 8px;
 	}
 
 	.legend h3 {
 		font-size: 1rem;
 		margin-bottom: 0.75rem;
-		color: #333;
+		color: #2c2c2c;
+		font-weight: 600;
+		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 
 	.legend-items {
 		display: flex;
 		gap: 1.5rem;
 		flex-wrap: wrap;
+		margin-bottom: 0.5rem;
 	}
 
 	.legend-item {
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
+		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 
 	.legend-bubble {
 		width: 20px;
 		height: 20px;
 		border-radius: 50%;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	.legend-bubble.stressed {
+		background-color: #e8928e;
+	}
+
+	.legend-bubble.moderate {
+		background-color: #f4d49d;
+	}
+
+	.legend-bubble.calm {
+		background-color: #b8d89f;
 	}
 
 	.legend-note {
-		margin-top: 0.75rem;
+		margin-top: 0.5rem;
 		font-size: 0.85rem;
-		color: #666;
+		color: #6c5545;
 		font-style: italic;
+		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 
 	@media (max-width: 600px) {

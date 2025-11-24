@@ -146,11 +146,13 @@
 		background-repeat: no-repeat;
 		position: relative;
 		overflow: hidden;
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 	
 	/* Header styles */
 	.header h1 {
 		font-size: 3rem;
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
 		margin-bottom: 1rem;
 		color: #000;
 		font-weight: 700;
@@ -160,6 +162,7 @@
 	
 	.header p {
 		font-size: 1.2rem;
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
 		margin-bottom: 3rem;
 		color: #333;
 		position: relative;
@@ -170,6 +173,7 @@
 	.main-content {
 		position: relative;
 		z-index: 2;
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 	
 	/* Big smiley button */
@@ -231,7 +235,7 @@
 	}
 	
 	.quote-card p {
-		font-style: italic;
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
 		font-size: 1.2rem;
 		line-height: 1.6;
 		margin: 0;
@@ -247,6 +251,7 @@
 		justify-content: center;
 		flex-wrap: wrap;
 		margin-top: 3rem;
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 	
 	/* Back button */
@@ -262,6 +267,7 @@
 		transition: all 0.3s ease;
 		font-weight: 600;
 		font-size: 1.1rem;
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 	}
 	
