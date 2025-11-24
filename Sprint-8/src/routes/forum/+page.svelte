@@ -138,12 +138,6 @@
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
   }
 
-    :global(body) {
-    background: #e8a87c;
-    margin: 0;
-    padding: 0;
-  }
-
   .container {
     background: #f7ebe4;
     border-radius: 20px;
@@ -154,6 +148,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+  }
+  
+  .container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #e8a87c;
+    z-index: -1;
   }
 
   h1 {
