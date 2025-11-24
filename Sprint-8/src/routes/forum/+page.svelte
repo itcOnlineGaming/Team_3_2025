@@ -122,7 +122,7 @@
 
   .submit-button {
     padding: 1rem 2rem;
-    background-color: #4CAF50;
+    background-color: #e8a87c;
     color: white;
     text-decoration: none;
     border-radius: 8px;
@@ -134,8 +134,10 @@
   }
 
   .submit-button:hover {
-    background-color: #45a049;
+    background-color: #d89968;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+
   }
 
   .container {
@@ -149,6 +151,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    font-family: BlinkMacSystemFont, -apple-system, sans-serif;
   }
   
   .container::before {
@@ -166,6 +169,7 @@
     font-size: 2.5rem;
     margin-bottom: 3rem;
     color: #333;
+    font-family: BlinkMacSystemFont, -apple-system, sans-serif;
   }
 
   .spectrum-container {
@@ -202,6 +206,7 @@
     cursor: pointer;
     position: relative;
     transition: all 0.3s ease;
+    font-family: BlinkMacSystemFont, -apple-system, sans-serif;
   }
 
   .mood-button:hover {
@@ -231,6 +236,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 600px;
+    font-family: BlinkMacSystemFont, -apple-system, sans-serif;
   }
 
   .title {
@@ -239,6 +245,7 @@
     color: #1f2937;
     margin-bottom: 1.5rem;
     text-align: center;
+    font-family: BlinkMacSystemFont, -apple-system, sans-serif;
   }
 
   .form-group {
