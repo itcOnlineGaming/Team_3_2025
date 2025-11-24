@@ -45,6 +45,12 @@
       alert('Please fill in all fields before submitting');
     }
   }
+
+  function handleEnterKey(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      handleSubmit();
+    }
+  }
 </script>
 
 <div class="container">
@@ -84,6 +90,7 @@
         maxlength={charLimit}
         placeholder="Type your response..."
         onchange={handleChange}
+        onkeypress={(e) => handleEnterKey(e)}
         class="input"
       />
       
