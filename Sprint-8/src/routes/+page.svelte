@@ -9,9 +9,10 @@
     where we design and develop an interface under different SRL headings. 
     Our group is working under the heading of emotional management.</p>
   <h1>Emotional App Prototype</h1>
-  <p>The aim of our app is about to log and visualise stress levels through graphs, along with an optional meditation session to calm the users nerves.
-    We would appreciate if you could test out our prototype and fill out the short form at the end.
-    To start click the button below</p>
+  <p>Track your emotional well-being with our app. Log how you're feeling, visualize your mood patterns through interactive graphs, 
+     and access a guided meditation session when you need to relax. <br><br>
+     We'd love your feedback!<br> Please test our prototype and complete the short survey at the end. <br>
+     Click below to begin your journey.</p>
 </div>
 
 <div class="container">

@@ -10,11 +10,11 @@
   let selectedIntensity = $state<number>(3);
 
   const moods = [
-    { id: 'stress', label: 'Stressed', color: '#E91E63', intensity: 5 },
-    { id: 'bad', label: 'little stressed', color: '#FF69B4', intensity: 4 },
-    { id: 'okay', label: 'Okay', color: '#FFA500', intensity: 3 },
-    { id: 'good', label: 'good', color: '#FFD700', intensity: 2 },
-    { id: 'notStressed', label: 'Not Stressed', color: '#9ACD32', intensity: 1 }
+    { id: 'stress', label: 'Stressed', color: '#E91E63', intensity: 5, icon: 'stressed.svg' },
+    { id: 'bad', label: 'little stressed', color: '#FF69B4', intensity: 4, icon: 'bad.svg' },
+    { id: 'okay', label: 'Okay', color: '#FFA500', intensity: 3, icon: 'okay.svg' },
+    { id: 'good', label: 'good', color: '#FFD700', intensity: 2, icon: 'good.svg' },
+    { id: 'notStressed', label: 'Not Stressed', color: '#9ACD32', intensity: 1, icon: 'notStressed.svg' }
   ];
 
   // Derived question text based on selected mood
@@ -45,6 +45,12 @@
       alert('Please fill in all fields before submitting');
     }
   }
+
+  function handleEnterKey(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      handleSubmit();
+    }
+  }
 </script>
 
 <div class="container">
@@ -61,6 +67,11 @@
           style="--mood-color: {mood.color}"
           onclick={() => selectMood(mood.label, mood.intensity)}
         >
+        <img 
+          src={`${base}/Images/${mood.icon}`} 
+          alt={mood.label} 
+          class="mood-icon"
+        />
         </button>
       {/each}
     </div>
@@ -84,6 +95,7 @@
         maxlength={charLimit}
         placeholder="Type your response..."
         onchange={handleChange}
+        onkeypress={(e) => handleEnterKey(e)}
         class="input"
       />
       
@@ -127,13 +139,27 @@
   }
 
   .container {
+    background: #f7ebe4;
+    border-radius: 20px;
+    max-width: 800px;
+    width: 90%;
+    padding: 2rem;
+    margin: 2rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 2rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    position: relative;
+  }
+  
+  .container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #e8a87c;
+    z-index: -1;
   }
 
   h1 {
@@ -228,6 +254,13 @@
     border-radius: 0.5rem;
     font-size: 1rem;
     transition: border-color 0.2s;
+  }
+
+  .mood-icon {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  pointer-events: none;
   }
 
   .input:focus {
