@@ -12,34 +12,103 @@
 		stressors: Stressor[];
 		date?: Date;
 		onRemove?: (id: string) => void;
+		readonly?: boolean;
 	}
 
-	let { stressors = [], date = new Date(), onRemove }: Props = $props();
+	let { stressors = [], date = new Date(), onRemove, readonly = false }: Props = $props();
 
-	// Generate random but consistent positions for bubbles
-	function generatePositions(count: number) {
-		const positions = [];
-		const margin = 15;
+	// Improved bubble placement with dynamic collision detection
+	function generatePositions(stressors: Stressor[]) {
+		const count = stressors.length;
+		if (count === 0) return [];
 		
+		const positions: Array<{x: number, y: number, radius: number}> = [];
+		const containerSize = 500;
+		const margin = 12;
+		const minSpacing = 12;
+		
+		// Reduced max size - now 60px to 120px instead of 60px to 140px
+		const getBubbleRadius = (stressor: Stressor) => {
+			const sizePixels = stressor.intensity * 16 + 44; // Adjusted formula
+			return (sizePixels / 2 / containerSize) * 100;
+		};
+
+		const hasCollision = (x: number, y: number, r: number) => {
+			// Check bounds
+			if (x - r < margin || x + r > 100 - margin) return true;
+			if (y - r < margin || y + r > 100 - margin) return true;
+
+			// Check collisions with existing bubbles
+			for (const pos of positions) {
+				const dx = x - pos.x;
+				const dy = y - pos.y;
+				const distance = Math.sqrt(dx * dx + dy * dy);
+				const minDistance = r + pos.radius + (minSpacing / containerSize * 100);
+				if (distance < minDistance) return true;
+			}
+			return false;
+		};
+
+		// Try to place bubble near existing ones
+		const findValidPosition = (radius: number, attempts: number = 150): {x: number, y: number} | null => {
+			if (positions.length === 0) {
+				// First bubble - center it
+				return { x: 50, y: 50 };
+			}
+
+			// Try placing near existing bubbles first
+			for (let attempt = 0; attempt < attempts; attempt++) {
+				let x: number, y: number;
+				
+				if (attempt < attempts * 0.7) {
+					// First 70% of attempts: place near existing bubbles
+					const refBubble = positions[Math.floor(Math.random() * positions.length)];
+					const angle = Math.random() * Math.PI * 2;
+					const distance = refBubble.radius + radius + (minSpacing / containerSize * 100) + 5 + (Math.random() * 10);
+					
+					x = refBubble.x + Math.cos(angle) * distance;
+					y = refBubble.y + Math.sin(angle) * distance;
+				} else {
+					// Last 30% of attempts: random placement
+					x = margin + radius + Math.random() * (100 - 2 * margin - 2 * radius);
+					y = margin + radius + Math.random() * (100 - 2 * margin - 2 * radius);
+				}
+
+				if (!hasCollision(x, y, radius)) {
+					return { x, y };
+				}
+			}
+
+			return null;
+		};
+
+		// Place bubbles one by one
 		for (let i = 0; i < count; i++) {
-			const angle = (i / count) * Math.PI * 2;
-			const radius = 25 + (i % 2) * 15;
-			const x = 50 + Math.cos(angle) * radius;
-			const y = 50 + Math.sin(angle) * radius;
+			const radius = getBubbleRadius(stressors[i]);
+			const position = findValidPosition(radius);
 			
-			positions.push({
-				x: Math.max(margin, Math.min(100 - margin, x)),
-				y: Math.max(margin, Math.min(100 - margin, y))
-			});
+			if (position) {
+				positions.push({ ...position, radius });
+			} else {
+				// Fallback: force placement in a grid
+				const cols = Math.ceil(Math.sqrt(count));
+				const row = Math.floor(i / cols);
+				const col = i % cols;
+				const cellWidth = (100 - 2 * margin) / cols;
+				const cellHeight = (100 - 2 * margin) / Math.ceil(count / cols);
+				const x = margin + col * cellWidth + cellWidth / 2;
+				const y = margin + row * cellHeight + cellHeight / 2;
+				positions.push({ x, y, radius });
+			}
 		}
-		
+
 		return positions;
 	}
 
-	const positions = $derived(generatePositions(stressors.length));
+	const positions = $derived(generatePositions(stressors));
 	
 	function handleBubbleClick(id: string) {
-		if (onRemove) {
+		if (!readonly && onRemove) {
 			onRemove(id);
 		}
 	}
@@ -62,9 +131,10 @@
 					text={stressor.text}
 					intensity={stressor.intensity}
 					mood={stressor.mood}
-					x={positions[i].x}
-					y={positions[i].y}
+					x={positions[i]?.x || 50}
+					y={positions[i]?.y || 50}
 					onclick={() => handleBubbleClick(stressor.id)}
+					readonly={readonly}
 				/>
 			{/each}
 		{/if}
@@ -86,7 +156,9 @@
 				<span>Calm</span>
 			</div>
 		</div>
-		<p class="legend-note">Size represents stress intensity</p>
+		{#if !readonly}
+			<p class="legend-note">Size represents stress intensity. Hover over bubbles to remove them.</p>
+		{/if}
 	</div>
 </div>
 
@@ -176,15 +248,15 @@
 	}
 
 	.legend-bubble.stressed {
-		background-color: #e8928e;
+		background-color: #E91E63;
 	}
 
 	.legend-bubble.moderate {
-		background-color: #f4d49d;
+		background-color: #FFA500;
 	}
 
 	.legend-bubble.calm {
-		background-color: #b8d89f;
+		background-color: #9ACD32;
 	}
 
 	.legend-note {

@@ -94,7 +94,6 @@
         bind:value={text}
         maxlength={charLimit}
         placeholder="Type your response..."
-        onchange={handleChange}
         onkeypress={(e) => handleEnterKey(e)}
         class="input"
       />
