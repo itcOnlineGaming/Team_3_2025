@@ -85,11 +85,13 @@
     <div class="inner-circle"></div>
   </div>
   
-  <h2>{phase}</h2>
+  <div class="phase">
+    <h2>{phase}</h2>
 
-  {#if timeLeft > 0}
-    <p class="timer">Time remaining: {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}</p>
-  {/if}
+    {#if timeLeft > 0}
+      <p class="timer">Time remaining: {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}</p>
+    {/if}
+  </div>
 </div>
 
 <style>
@@ -102,6 +104,27 @@
     min-height: 60vh;
     position: relative;
   }
+
+  .phase {
+    margin-top: 10rem;
+    text-align: center;
+		background: rgba(255, 255, 255, 0.2);
+		backdrop-filter: blur(10px);
+		border-radius: 20px;
+		padding: 2rem;
+    padding-top: 0rem;
+		margin-bottom: 2rem;
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+	
+	.phase p {
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
+		font-size: 1.2rem;
+		line-height: 1.6;
+		margin: 0;
+		color: #000;
+	}
 
   .breathing-circle {
     width: 200px;

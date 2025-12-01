@@ -15,14 +15,25 @@
 </script>
 
 <div class="container">
+  <div class="help-popup">
+		<div class="help-content">
+      <h3>Steps:</h3>
+        <ol>
+          <li>Click Skip To Proceed to Feedback</li>
+          <li>Click Start to Begin the Meditation</li>
+        </ol>
+    </div>
+  </div>
+
   <div class="content-wrapper">
     {#if !started}
       <div class="intro">
-        <h1>Would You Like To Meditate?</h1>
+        <h2>Would You Like To Meditate?</h2>
         <p>It's important to stay mindful, take a moment to meditate</p>
+        </div>
         <div class="meditation-card">
           <h2>2 Minute<br>Meditation</h2>
-        </div>
+        
       </div>
     {:else}
       <Meditation on:complete={handleComplete} />
@@ -66,8 +77,24 @@
   }
 
   .intro {
+    margin-top: 10rem;
     text-align: center;
-  }
+		background: rgba(255, 255, 255, 0.2);
+		backdrop-filter: blur(10px);
+		border-radius: 20px;
+		padding-bottom: 1rem;
+		margin-bottom: 2rem;
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+	}
+	
+	.intro p {
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
+		font-size: 1.2rem;
+		line-height: 1.6;
+		margin: 0;
+		color: #000;
+	}
 
   h1 {
     font-size: 3rem;
@@ -119,11 +146,10 @@
   .button-container {
     position: fixed;
     bottom: 2rem;
-    left: 2rem;
-    right: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    justify-content: space-between;
-    max-width: calc(100% - 4rem);
+    gap: 40rem;
     z-index: 10;
   }
 
@@ -155,4 +181,45 @@
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   }
+
+  .help-popup {
+  position: fixed;
+  left: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  max-width: 250px;
+}
+
+.help-content h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.25rem;
+  font-family: BlinkMacSystemFont, -apple-system, sans-serif;
+}
+
+.help-content ol {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #666;
+}
+
+.help-content li {
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.help-content li:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .help-popup {
+    display: none;
+  }
+}
 </style>

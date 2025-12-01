@@ -129,22 +129,35 @@
 
 <div class="page-container">
 	{#if !isLoading}
+		<div class="help-popup">
+			<div class="help-content">
+			<h3>Steps:</h3>
+			<ol>
+				<li>Reflect on your activities and what what stresses you.</li>
+				<li>Add another stressor to the graph</li>
+				<li>Click Save an Continue</li>
+				<li>View your stressors in the calendar</li>
+				<li>Once Complete Click Save and Continue</li>
+			</ol>
+			</div>
+  		</div>
+
 		<StressBubbleGraph 
 			stressors={$stressStore} 
 			onIntensityChange={handleIntensityChange}
-		/>
-
-		<div class="action-buttons">
-			<a 
-				href={`${base}/forum`} 
-				class="add-button" 
-				class:disabled={$stressStore.length >= 5}
-				title={$stressStore.length >= 5 ? "Maximum stressors reached" : "Add Another Stressor"}
-				onclick={handleAddClick}
-			>
-				<span class="plus-icon">+</span>
-			</a>
-
+			onRemove={handleIntensityChange}
+			onMaxReached={handleMaxReached}
+		>
+		
+		<a 
+		href={`${base}/forum`} 
+		class="add-button" 
+		class:disabled={$stressStore.length >= 5}
+		title={$stressStore.length >= 5 ? "Maximum stressors reached" : "Add Another Stressor"}
+		onclick={handleAddClick}
+		>
+		<span class="plus-icon">+</span>
+	</a>
 			{#if $stressStore.length > 0}
 				<button onclick={goToCalendar} class="calendar-button" type="button">
 					View History
@@ -152,7 +165,7 @@
 			{/if}
 
 			<button onclick={handleNextClick} class="next-button" type="button">Continue to Meditation</button>
-		</div>
+			</StressBubbleGraph>
 		
 		{#if $stressStore.length > 0}
 			<div class="auto-save-indicator">
@@ -180,7 +193,7 @@
 	.page-container {
 		min-height: 100vh;
 		padding: 2rem;
-		background: #fef5ee;
+		background: #e8a87c;
 		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
 		position: relative;
 	}
@@ -393,4 +406,45 @@
 			padding: 0.6rem 1.2rem;
 		}
 	}
+
+	.help-popup {
+  position: fixed;
+  left: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  max-width: 250px;
+}
+
+.help-content h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.25rem;
+  font-family: BlinkMacSystemFont, -apple-system, sans-serif;
+}
+
+.help-content ol {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #666;
+}
+
+.help-content li {
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.help-content li:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .help-popup {
+    display: none;
+  }
+}
 </style>

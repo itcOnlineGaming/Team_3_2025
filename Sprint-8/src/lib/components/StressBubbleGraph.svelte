@@ -13,9 +13,10 @@
 		date?: Date;
 		onIntensityChange?: (id: string, newIntensity: number) => void;
 		readonly?: boolean;
+		children?: any;
 	}
 
-	let { stressors = [], date = new Date(), onIntensityChange, readonly = false }: Props = $props();
+	let { stressors = [], date = new Date(), onIntensityChange, onRemove, readonly = false, children }: Props = $props();
 
 	// Improved bubble placement with dynamic collision detection
 	function generatePositions(stressorsList: Stressor[]) {
@@ -161,6 +162,12 @@
 			<p class="legend-note">Size represents stress intensity. Hover over bubbles to adjust intensity with + (increase) or − (decrease). At intensity 1, click 💥 to pop the bubble!</p>
 		{/if}
 	</div>
+
+	{#if children}
+		<div class="action-buttons-container">
+			{@render children()}
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -276,6 +283,22 @@
 		.legend-items {
 			flex-direction: column;
 			gap: 0.75rem;
+		}
+	}
+
+	.action-buttons-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1.5rem;
+		margin: 1.5rem 0;
+		flex-wrap: wrap;
+	}
+
+	@media (max-width: 600px) {
+		.action-buttons-container {
+			flex-direction: column;
+			gap: 1rem;
 		}
 	}
 </style>
