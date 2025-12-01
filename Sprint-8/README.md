@@ -36,3 +36,18 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+
+# How to set up 
+
+- 1. npm install inside sprint 8 folder 
+- 2. npm run dev inside sprint 8 folder + press o and enter 
+
+
+# Collabortars 
+
+- Edward Norton
+- Jakub Stepien
+- alex bowes
+- jonathan dellenbach 
+
+

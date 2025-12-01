@@ -105,7 +105,7 @@
 	
 	<div class="main-content">
 		<div class="smiley-container">
-			<button class="big-smiley" on:click={getRandomQuote}>:)</button>
+			<button class="big-smiley" on:click={getRandomQuote}>Change Quote</button>
 		</div>
 
 		<div class="quote-section">
@@ -146,39 +146,57 @@
 {/if}-->
 
 <style>
+
+	.container {
+		margin: 0;
+		padding: 0;
+		position: relative;
+	}
+	
 	/* Main container */
 	.forum-conclusion {
-		
-		margin: 0 auto;
+		margin: 0;
 		padding: 2rem;
 		min-height: 100vh;
+		width: 100vw;
+		position: absolute;
+		top: 0;
+		left: 0;
 		text-align: center;
-		background-image: url('/Images/background art.png');
-		background-size: cover;
+		background-image: url('/Images/background art.png') ;
+		background-size: 100%;
 		background-position: center;
 		background-repeat: no-repeat;
-		position: relative;
+		background-attachment: fixed;
 		overflow: hidden;
 		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
+		box-sizing: border-box;
 	}
 	
 	/* Header styles */
+
+	.header {
+		z-index: 5;
+		background: rgba(255, 255, 255, 0.572);
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		border-radius: 20px;
+		padding-bottom: 5px;
+	}
+
 	.header h1 {
 		font-size: 3rem;
 		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
-		margin-bottom: 1rem;
-		color: #000;
+		color: #000000;
 		font-weight: 700;
-		position: relative;
+		margin-bottom: auto;
 		z-index: 2;
 	}
 	
 	.header p {
-		font-size: 1.2rem;
+		font-size: 2rem;
+		-webkit-text-stroke: #000 0.1px;
 		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
-		margin-bottom: 3rem;
 		color: #333;
-		position: relative;
 		z-index: 2;
 	}
 	
@@ -196,19 +214,16 @@
 	}
 	
 	.big-smiley {
-		font-size: 8rem;
-		background: linear-gradient(135deg, #d4723c 0%, #c8632e 100%);
-		border: none;
+		font-size: 2rem;
+		background: linear-gradient(135deg, #ffe880 0%, #c94600 100%);
 		cursor: pointer;
 		width: 200px;
 		height: 200px;
 		border-radius: 50%;
-		display: inline-flex;
+		display: wrap;
 		align-items: center;
-		justify-content: center;
 		margin: 0 auto;
 		transition: transform 0.3s ease;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
 		color: white;
 		position: relative;
 		overflow: visible;
@@ -216,7 +231,7 @@
 	
 	.big-smiley::before {
 		content: '';
-		position: absolute;
+		position: relative;
 		bottom: -80px;
 		left: 50%;
 		transform: translateX(-50%);
