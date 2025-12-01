@@ -133,11 +133,12 @@
 			<div class="help-content">
 			<h3>Steps:</h3>
 			<ol>
-				<li>Reflect on your activities and what what stresses you.</li>
+				<li>Reflect on your activities and what stresses you.</li>
 				<li>Add another stressor to the graph</li>
-				<li>Click Save an Continue</li>
+				<li>Increase the stress level of a bubble</li>
+				<li>Decrease the stress level of a bubble</li>
 				<li>View your stressors in the calendar</li>
-				<li>Once Complete Click Save and Continue</li>
+				<li>Click Continue to Meditation</li>
 			</ol>
 			</div>
   		</div>
@@ -160,7 +161,7 @@
 	</a>
 			{#if $stressStore.length > 0}
 				<button onclick={goToCalendar} class="calendar-button" type="button">
-					View History
+					View Calendar
 				</button>
 			{/if}
 

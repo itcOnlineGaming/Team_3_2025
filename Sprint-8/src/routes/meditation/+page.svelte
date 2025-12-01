@@ -19,8 +19,8 @@
 		<div class="help-content">
       <h3>Steps:</h3>
         <ol>
-          <li>Click Skip To Proceed to Feedback</li>
           <li>Click Start to Begin the Meditation</li>
+          <li>Click Skip To Proceed to Feedback</li>
         </ol>
     </div>
   </div>
