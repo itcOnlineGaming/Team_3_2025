@@ -84,17 +84,19 @@
 	}
 </script>
 
-<div class="forum-conclusion">
-
-	<div class="help-popup">
+<div class="container">
+  <div class="help-popup">
 		<div class="help-content">
-			<h3>Steps:</h3>
-			<ol>
-			<li>Fill out the feedback Form</li>
-			<li>Return to the Home Page</li>
-			</ol>
-		</div>
-	</div>
+      <h3>Steps:</h3>
+        <ol>
+          <li>Click Skip To Proceed to Feedback</li>
+          <li>Click Start to Begin the Meditation</li>
+        </ol>
+    </div>
+  </div>
+</div>
+
+<div class="forum-conclusion">
 
 	<div class="header">
 		<h1>Feedback</h1>
