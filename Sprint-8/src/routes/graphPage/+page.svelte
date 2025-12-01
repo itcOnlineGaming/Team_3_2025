@@ -109,30 +109,28 @@
   	</div>
 
 	<StressBubbleGraph 
-		stressors={$stressStore} 
-		onRemove={handleRemoveStressor}
-		onMaxReached={handleMaxReached}
-	/>
+	stressors={$stressStore} 
+	onRemove={handleRemoveStressor}
+	onMaxReached={handleMaxReached}
+	>
+	<a 
+		href={`${base}/forum`} 
+		class="add-button" 
+		class:disabled={$stressStore.length >= 5}
+		title={$stressStore.length >= 5 ? "Maximum stressors reached" : "Add Another Stressor"}
+		onclick={handleAddClick}
+	>
+		<span class="plus-icon">+</span>
+	</a>
 
-	<div class="action-buttons">
-		<a 
-			href={`${base}/forum`} 
-			class="add-button" 
-			class:disabled={$stressStore.length >= 5}
-			title={$stressStore.length >= 5 ? "Maximum stressors reached" : "Add Another Stressor"}
-			onclick={handleAddClick}
-		>
-			<span class="plus-icon">+</span>
-		</a>
+	{#if $stressStore.length > 0}
+		<button onclick={goToCalendar} class="calendar-button" type="button">
+			📅 View History
+		</button>
+	{/if}
 
-		{#if $stressStore.length > 0}
-			<button onclick={goToCalendar} class="calendar-button" type="button">
-				📅 View History
-			</button>
-		{/if}
-
-		<button onclick={handleNextClick} class="next-button" type="button">Save & Continue</button>
-	</div>
+	<button onclick={handleNextClick} class="next-button" type="button">Save & Continue</button>
+	</StressBubbleGraph>
 </div>
 
 {#if showMaxModal}
@@ -188,7 +186,7 @@
 	.page-container {
 		min-height: 100vh;
 		padding: 2rem;
-		background: #f7ebe4;
+		background: #e8a87c;
 		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 

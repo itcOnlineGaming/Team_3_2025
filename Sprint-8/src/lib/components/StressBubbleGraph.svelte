@@ -13,9 +13,10 @@
 		date?: Date;
 		onRemove?: (id: string) => void;
 		readonly?: boolean;
+		children?: any;
 	}
 
-	let { stressors = [], date = new Date(), onRemove, readonly = false }: Props = $props();
+	let { stressors = [], date = new Date(), onRemove, readonly = false, children }: Props = $props();
 
 	// Improved bubble placement with dynamic collision detection
 	function generatePositions(stressors: Stressor[]) {
@@ -160,6 +161,12 @@
 			<p class="legend-note">Size represents stress intensity. Hover over bubbles to remove them.</p>
 		{/if}
 	</div>
+
+	{#if children}
+		<div class="action-buttons-container">
+			{@render children()}
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -274,6 +281,22 @@
 		.legend-items {
 			flex-direction: column;
 			gap: 0.75rem;
+		}
+	}
+
+	.action-buttons-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1.5rem;
+		margin: 1.5rem 0;
+		flex-wrap: wrap;
+	}
+
+	@media (max-width: 600px) {
+		.action-buttons-container {
+			flex-direction: column;
+			gap: 1rem;
 		}
 	}
 </style>
