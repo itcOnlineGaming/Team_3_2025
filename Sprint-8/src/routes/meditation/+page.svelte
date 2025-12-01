@@ -18,11 +18,12 @@
   <div class="content-wrapper">
     {#if !started}
       <div class="intro">
-        <h1>Would You Like To Meditate?</h1>
+        <h2>Would You Like To Meditate?</h2>
         <p>It's important to stay mindful, take a moment to meditate</p>
+        </div>
         <div class="meditation-card">
           <h2>2 Minute<br>Meditation</h2>
-        </div>
+        
       </div>
     {:else}
       <Meditation on:complete={handleComplete} />
@@ -66,8 +67,24 @@
   }
 
   .intro {
+    margin-top: 10rem;
     text-align: center;
-  }
+		background: rgba(255, 255, 255, 0.2);
+		backdrop-filter: blur(10px);
+		border-radius: 20px;
+		padding-bottom: 1rem;
+		margin-bottom: 2rem;
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+	}
+	
+	.intro p {
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
+		font-size: 1.2rem;
+		line-height: 1.6;
+		margin: 0;
+		color: #000;
+	}
 
   h1 {
     font-size: 3rem;
