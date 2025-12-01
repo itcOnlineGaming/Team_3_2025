@@ -5,17 +5,18 @@
 		mood?: string;
 		x?: number;
 		y?: number;
-		onclick?: () => void;
+		onIntensityChange?: (newIntensity: number) => void;
 		readonly?: boolean;
 	}
 
-	let { text, intensity, mood, x = 50, y = 50, onclick, readonly = false }: Props = $props();
+	let { text, intensity, mood, x = 50, y = 50, onIntensityChange, readonly = false }: Props = $props();
 
 	let isHovered = $state(false);
 	let hoverTimeout: number | null = null;
+	let isPopping = $state(false);
 
 	// Reduced size calculation - now 60px to 120px instead of 60px to 140px
-	const size = intensity * 16 + 44;
+	const size = $derived(intensity * 16 + 44);
 	
 	const colors = {
 		1: '#9ACD32',
@@ -25,7 +26,7 @@
 		5: '#E91E63'
 	};
 	
-	const bubbleColor = colors[intensity as keyof typeof colors] || '#FFA500';
+	const bubbleColor = $derived(colors[intensity as keyof typeof colors] || '#FFA500');
 
 	function handleMouseEnter() {
 		if (readonly) return;
@@ -42,19 +43,40 @@
 		}, 100);
 	}
 
-	function handleDeleteClick(e: MouseEvent) {
+	function handleIncreaseClick(e: MouseEvent) {
 		if (readonly) return;
 		e.stopPropagation();
 		if (hoverTimeout) {
 			clearTimeout(hoverTimeout);
 		}
-		if (onclick) onclick();
+		if (intensity < 5 && onIntensityChange) {
+			onIntensityChange(intensity + 1);
+		}
+	}
+
+	function handleDecreaseClick(e: MouseEvent) {
+		if (readonly) return;
+		e.stopPropagation();
+		if (hoverTimeout) {
+			clearTimeout(hoverTimeout);
+		}
+		
+		if (intensity > 1 && onIntensityChange) {
+			onIntensityChange(intensity - 1);
+		} else if (intensity === 1 && onIntensityChange) {
+			// Pop the bubble when intensity is 1 and decrease is clicked
+			isPopping = true;
+			setTimeout(() => {
+				onIntensityChange(0);
+			}, 300); // Wait for animation to complete
+		}
 	}
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div 
 	class="bubble-wrapper"
+	class:popping={isPopping}
 	style="left: {x}%; top: {y}%;"
 	onmouseenter={handleMouseEnter}
 	onmouseleave={handleMouseLeave}
@@ -74,16 +96,29 @@
 		<span class="bubble-text">{text}</span>
 		<span class="intensity-badge">{intensity}</span>
 		
-		{#if isHovered && !readonly}
+		{#if isHovered && !readonly && !isPopping}
 			<button 
-				class="delete-button" 
-				onclick={handleDeleteClick}
+				class="control-button increase-button" 
+				onclick={handleIncreaseClick}
 				onmouseenter={handleMouseEnter}
-				title="Remove stressor"
+				title="Increase intensity"
 				type="button"
-				aria-label="Remove this stressor"
+				aria-label="Increase intensity"
+				disabled={intensity >= 5}
+				class:disabled={intensity >= 5}
 			>
-				<span class="delete-icon">−</span>
+				<span class="control-icon">+</span>
+			</button>
+			
+			<button 
+				class="control-button decrease-button" 
+				onclick={handleDecreaseClick}
+				onmouseenter={handleMouseEnter}
+				title={intensity === 1 ? "Pop bubble" : "Decrease intensity"}
+				type="button"
+				aria-label={intensity === 1 ? "Pop bubble" : "Decrease intensity"}
+			>
+				<span class="control-icon">{intensity === 1 ? '💥' : '−'}</span>
 			</button>
 		{/if}
 	</div>
@@ -94,10 +129,30 @@
 		position: absolute;
 		transform: translate(-50%, -50%);
 		z-index: 1;
+		transition: opacity 0.3s ease, transform 0.3s ease;
 	}
 
 	.bubble-wrapper:hover {
 		z-index: 100;
+	}
+
+	.bubble-wrapper.popping {
+		animation: pop 0.3s ease forwards;
+	}
+
+	@keyframes pop {
+		0% {
+			transform: translate(-50%, -50%) scale(1);
+			opacity: 1;
+		}
+		50% {
+			transform: translate(-50%, -50%) scale(1.3);
+			opacity: 0.8;
+		}
+		100% {
+			transform: translate(-50%, -50%) scale(0);
+			opacity: 0;
+		}
 	}
 
 	.bubble {
@@ -149,38 +204,60 @@
 		pointer-events: none;
 	}
 
-	.delete-button {
+	.control-button {
 		position: absolute;
-		top: -12px;
-		left: -12px;
 		width: 32px;
 		height: 32px;
 		border-radius: 50%;
-		background: #ff4444;
 		border: 3px solid white;
 		color: white;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		box-shadow: 0 3px 10px rgba(255, 68, 68, 0.5);
+		box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 		transition: all 0.2s ease;
 		animation: popIn 0.2s ease;
 		z-index: 10;
 		padding: 0;
+		font-weight: bold;
 	}
 
-	.delete-button:hover {
-		background: #cc0000;
+	.increase-button {
+		background: #4CAF50;
+		top: -12px;
+		right: -12px;
+	}
+
+	.increase-button:hover:not(.disabled) {
+		background: #45a049;
 		transform: scale(1.15);
-		box-shadow: 0 4px 12px rgba(204, 0, 0, 0.6);
+		box-shadow: 0 4px 12px rgba(76, 175, 80, 0.6);
 	}
 
-	.delete-button:active {
+	.decrease-button {
+		background: #ff9800;
+		top: -12px;
+		left: -12px;
+	}
+
+	.decrease-button:hover {
+		background: #e68900;
+		transform: scale(1.15);
+		box-shadow: 0 4px 12px rgba(255, 152, 0, 0.6);
+	}
+
+	.control-button.disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+		background: #999;
+	}
+
+	.control-button:active:not(.disabled) {
 		transform: scale(1.05);
 	}
 
-	.delete-icon {
+	.control-icon {
 		font-size: 1.5rem;
 		font-weight: bold;
 		line-height: 1;

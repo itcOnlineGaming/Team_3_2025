@@ -1,32 +1,81 @@
 <script lang="ts">
 	import StressBubbleGraph from '$lib/components/StressBubbleGraph.svelte';
-	import { stressStore } from '$lib/stores/stressStore';
+	import { stressStore, type Stressor } from '$lib/stores/stressStore';
 	import { calendarStore } from '$lib/stores/calendarStore';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	let showMaxModal = $state(false);
-	let showSaveModal = $state(false);
-	let showDeleteModal = $state(false);
-	let stressorToDelete = $state<string | null>(null);
-	let saveType: 'new' | 'override' = $state('new');
+	let isLoading = $state(true);
 	
-	function handleRemoveStressor(id: string) {
-		stressorToDelete = id;
-		showDeleteModal = true;
-	}
-
-	function confirmDelete() {
-		if (stressorToDelete) {
-			stressStore.remove(stressorToDelete);
-			stressorToDelete = null;
+	// Auto-save functionality
+	let autoSaveTimeout: number | null = null;
+	let hasLoadedInitialData = false;
+	let lastSavedCount = 0;
+	
+	// Load today's data on mount if it exists
+	onMount(() => {
+		const today = new Date();
+		const existingEntry = calendarStore.getEntry(today);
+		const currentStoreCount = $stressStore.length;
+		
+		console.log('onMount - Current store count:', currentStoreCount);
+		console.log('onMount - Saved entry count:', existingEntry?.stressors.length || 0);
+		
+		// Only load saved data if the store is empty OR has fewer items than saved
+		// This prevents overwriting newly added stressors from the forum page
+		if (existingEntry && existingEntry.stressors.length > 0 && currentStoreCount === 0) {
+			console.log('Loading saved stressors');
+			stressStore.loadStressors(existingEntry.stressors);
+			lastSavedCount = existingEntry.stressors.length;
+		} else if (currentStoreCount > 0) {
+			console.log('Keeping current store data (newly added stressor detected)');
+			lastSavedCount = currentStoreCount;
 		}
-		showDeleteModal = false;
-	}
+		
+		// Small delay to ensure everything is loaded
+		setTimeout(() => {
+			hasLoadedInitialData = true;
+			isLoading = false;
+		}, 100);
+	});
 
-	function cancelDelete() {
-		stressorToDelete = null;
-		showDeleteModal = false;
+	// Auto-save whenever stressors change (but only after initial load)
+	$effect(() => {
+		const stressors = $stressStore;
+		
+		// Skip auto-save until initial data is loaded
+		if (!hasLoadedInitialData) return;
+		
+		// Clear existing timeout
+		if (autoSaveTimeout) {
+			clearTimeout(autoSaveTimeout);
+		}
+		
+		// Set new timeout to save after 500ms of no changes
+		autoSaveTimeout = window.setTimeout(() => {
+			const today = new Date();
+			if (stressors.length > 0) {
+				calendarStore.saveEntry(today, stressors, true);
+				lastSavedCount = stressors.length;
+			} else if (lastSavedCount > 0) {
+				// Only delete if there were stressors before
+				calendarStore.deleteEntry(today);
+				lastSavedCount = 0;
+			}
+		}, 500);
+		
+		return () => {
+			if (autoSaveTimeout) {
+				clearTimeout(autoSaveTimeout);
+			}
+		};
+	});
+
+	function handleIntensityChange(id: string, newIntensity: number) {
+		// Use the new updateIntensity method which handles removal when intensity <= 0
+		stressStore.updateIntensity(id, newIntensity);
 	}
 
 	function handleMaxReached() {
@@ -47,34 +96,21 @@
 	function handleNextClick(e: Event) {
 		e.preventDefault();
 		
-		const today = new Date();
-		const hasEntry = calendarStore.hasEntry(today);
-		
-		if (hasEntry) {
-			saveType = 'override';
-			showSaveModal = true;
-		} else {
-			saveType = 'new';
-			saveAndContinue(false);
+		// Make sure data is saved before continuing
+		if ($stressStore.length > 0) {
+			const today = new Date();
+			calendarStore.saveEntry(today, $stressStore, true);
 		}
-	}
-
-	function saveAndContinue(override: boolean) {
-		const today = new Date();
-		calendarStore.saveEntry(today, $stressStore, override);
-		showSaveModal = false;
+		
 		goto(`${base}/meditation`);
-	}
-
-	function continueToMeditation() {
-		goto(`${base}/meditation`);
-	}
-
-	function closeSaveModal() {
-		showSaveModal = false;
 	}
 
 	function goToCalendar() {
+		// Save before navigating
+		if ($stressStore.length > 0) {
+			const today = new Date();
+			calendarStore.saveEntry(today, $stressStore, true);
+		}
 		goto(`${base}/calendarPage`);
 	}
 
@@ -85,8 +121,6 @@
 	function handleKeyDown(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
 			if (showMaxModal) closeMaxModal();
-			if (showDeleteModal) cancelDelete();
-			if (showSaveModal) closeSaveModal();
 		}
 	}
 </script>
@@ -94,31 +128,38 @@
 <svelte:window onkeydown={handleKeyDown} />
 
 <div class="page-container">
-	<StressBubbleGraph 
-		stressors={$stressStore} 
-		onRemove={handleRemoveStressor}
-		onMaxReached={handleMaxReached}
-	/>
+	{#if !isLoading}
+		<StressBubbleGraph 
+			stressors={$stressStore} 
+			onIntensityChange={handleIntensityChange}
+		/>
 
-	<div class="action-buttons">
-		<a 
-			href={`${base}/forum`} 
-			class="add-button" 
-			class:disabled={$stressStore.length >= 5}
-			title={$stressStore.length >= 5 ? "Maximum stressors reached" : "Add Another Stressor"}
-			onclick={handleAddClick}
-		>
-			<span class="plus-icon">+</span>
-		</a>
+		<div class="action-buttons">
+			<a 
+				href={`${base}/forum`} 
+				class="add-button" 
+				class:disabled={$stressStore.length >= 5}
+				title={$stressStore.length >= 5 ? "Maximum stressors reached" : "Add Another Stressor"}
+				onclick={handleAddClick}
+			>
+				<span class="plus-icon">+</span>
+			</a>
 
+			{#if $stressStore.length > 0}
+				<button onclick={goToCalendar} class="calendar-button" type="button">
+					View History
+				</button>
+			{/if}
+
+			<button onclick={handleNextClick} class="next-button" type="button">Continue to Meditation</button>
+		</div>
+		
 		{#if $stressStore.length > 0}
-			<button onclick={goToCalendar} class="calendar-button" type="button">
-				📅 View History
-			</button>
+			<div class="auto-save-indicator">
+				<span class="save-icon"></span> Auto-saved
+			</div>
 		{/if}
-
-		<button onclick={handleNextClick} class="next-button" type="button">Save & Continue</button>
-	</div>
+	{/if}
 </div>
 
 {#if showMaxModal}
@@ -135,47 +176,13 @@
 	</div>
 {/if}
 
-{#if showDeleteModal}
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div class="modal-overlay" onclick={cancelDelete} role="dialog" aria-modal="true">
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<div class="modal" onclick={handleModalClick}>
-			<h2>Remove Stressor?</h2>
-			<p>Are you sure you want to remove this stressor from your graph?</p>
-			<div class="modal-buttons">
-				<button class="modal-button cancel" onclick={cancelDelete} type="button">Cancel</button>
-				<button class="modal-button delete" onclick={confirmDelete} type="button">Remove</button>
-			</div>
-		</div>
-	</div>
-{/if}
-
-{#if showSaveModal}
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div class="modal-overlay" onclick={closeSaveModal} role="dialog" aria-modal="true">
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<div class="modal" onclick={handleModalClick}>
-			<h2>Entry Already Exists</h2>
-			<p>You already have an entry saved for today. Would you like to override it with the current data?</p>
-			<div class="modal-buttons">
-				<button class="modal-button cancel" onclick={closeSaveModal} type="button">Cancel</button>
-				<button class="modal-button continue" onclick={continueToMeditation} type="button">Skip Save</button>
-				<button class="modal-button save" onclick={() => saveAndContinue(true)} type="button">Override & Save</button>
-			</div>
-		</div>
-	</div>
-{/if}
-
 <style>
 	.page-container {
 		min-height: 100vh;
 		padding: 2rem;
-		background: #f7ebe4;
+		background: #fef5ee;
 		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
+		position: relative;
 	}
 
 	.action-buttons {
@@ -261,6 +268,38 @@
 		box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 	}
 
+	.auto-save-indicator {
+		position: fixed;
+		bottom: 2rem;
+		right: 2rem;
+		background: #4CAF50;
+		color: white;
+		padding: 0.75rem 1.5rem;
+		border-radius: 25px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.9rem;
+		animation: slideIn 0.3s ease;
+		z-index: 100;
+	}
+
+	@keyframes slideIn {
+		from {
+			transform: translateX(100%);
+			opacity: 0;
+		}
+		to {
+			transform: translateX(0);
+			opacity: 1;
+		}
+	}
+
+	.save-icon {
+		font-size: 1.2rem;
+	}
+
 	.modal-overlay {
 		position: fixed;
 		top: 0;
@@ -336,63 +375,6 @@
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 	}
 
-	.modal-buttons {
-		display: flex;
-		gap: 0.75rem;
-		flex-direction: column;
-	}
-
-	.modal-button {
-		padding: 0.75rem;
-		border: none;
-		border-radius: 8px;
-		font-size: 1rem;
-		font-weight: 500;
-		cursor: pointer;
-		transition: all 0.3s ease;
-		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
-	}
-
-	.modal-button.cancel {
-		background: #e0e0e0;
-		color: #666;
-	}
-
-	.modal-button.cancel:hover {
-		background: #d0d0d0;
-	}
-
-	.modal-button.continue {
-		background: #FFD700;
-		color: #333;
-	}
-
-	.modal-button.continue:hover {
-		background: #FFC700;
-	}
-
-	.modal-button.save {
-		background: #e8a87c;
-		color: white;
-	}
-
-	.modal-button.save:hover {
-		background: #d89968;
-		transform: translateY(-2px);
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-	}
-
-	.modal-button.delete {
-		background: #ff6b6b;
-		color: white;
-	}
-
-	.modal-button.delete:hover {
-		background: #ee5555;
-		transform: translateY(-2px);
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-	}
-
 	@media (max-width: 600px) {
 		.action-buttons {
 			flex-direction: column;
@@ -402,6 +384,13 @@
 		.calendar-button,
 		.next-button {
 			width: 100%;
+		}
+
+		.auto-save-indicator {
+			bottom: 1rem;
+			right: 1rem;
+			font-size: 0.8rem;
+			padding: 0.6rem 1.2rem;
 		}
 	}
 </style>

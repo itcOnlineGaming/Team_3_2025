@@ -22,10 +22,36 @@ function createStressStore() {
 				mood,
 				timestamp: new Date()
 			};
-			update(stressors => [...stressors, newStressor]);
+			console.log('Adding stressor:', newStressor);
+			update(stressors => {
+				const updated = [...stressors, newStressor];
+				console.log('Updated stressors:', updated);
+				return updated;
+			});
+		},
+		updateIntensity: (id: string, newIntensity: number) => {
+			console.log('Updating intensity:', id, newIntensity);
+			update(stressors => {
+				if (newIntensity <= 0) {
+					// Remove stressor if intensity is 0 or below
+					console.log('Removing stressor with id:', id);
+					return stressors.filter(s => s.id !== id);
+				}
+				// Update the intensity
+				const updated = stressors.map(s => 
+					s.id === id ? { ...s, intensity: newIntensity } : s
+				);
+				console.log('Updated stressors after intensity change:', updated);
+				return updated;
+			});
 		},
 		remove: (id: string) => {
 			update(stressors => stressors.filter(s => s.id !== id));
+		},
+		loadStressors: (stressors: Stressor[]) => {
+			// Load existing stressors without triggering adds
+			console.log('Loading stressors:', stressors);
+			set(stressors);
 		},
 		clearToday: () => set([]),
 		reset: () => set([])

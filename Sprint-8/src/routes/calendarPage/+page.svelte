@@ -46,21 +46,21 @@
 		}
 	}
 
-	function handleRemoveStressor(id: string) {
+	function handleIntensityChange(id: string, newIntensity: number) {
 		if (!selectedEntry || !selectedDate) return;
 		
-		// Remove stressor from the entry
-		const updatedStressors = selectedEntry.stressors.filter(s => s.id !== id);
+		// Find and update the stressor
+		const updatedStressors = selectedEntry.stressors.map(s => 
+			s.id === id ? { ...s, intensity: newIntensity } : s
+		).filter(s => s.intensity > 0); // Remove if intensity becomes 0
 		
 		if (updatedStressors.length === 0) {
 			// If no stressors left, delete the entire entry
 			calendarStore.deleteEntry(selectedDate);
-			// Force close modal and trigger reactivity
 			closeDetailModal();
-			// Trigger a manual update to force calendar refresh
 			calendarData = $calendarStore;
 		} else {
-			// Update the entry with remaining stressors
+			// Update the entry with modified stressors
 			calendarStore.saveEntry(selectedDate, updatedStressors, true);
 			// Update local state to show changes immediately
 			selectedEntry = { ...selectedEntry, stressors: updatedStressors };
@@ -95,7 +95,7 @@
 				<StressBubbleGraph 
 					stressors={selectedEntry.stressors}
 					date={selectedDate}
-					onRemove={handleRemoveStressor}
+					onIntensityChange={handleIntensityChange}
 					readonly={false}
 				/>
 			</div>

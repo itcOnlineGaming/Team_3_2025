@@ -11,15 +11,15 @@
 	interface Props {
 		stressors: Stressor[];
 		date?: Date;
-		onRemove?: (id: string) => void;
+		onIntensityChange?: (id: string, newIntensity: number) => void;
 		readonly?: boolean;
 	}
 
-	let { stressors = [], date = new Date(), onRemove, readonly = false }: Props = $props();
+	let { stressors = [], date = new Date(), onIntensityChange, readonly = false }: Props = $props();
 
 	// Improved bubble placement with dynamic collision detection
-	function generatePositions(stressors: Stressor[]) {
-		const count = stressors.length;
+	function generatePositions(stressorsList: Stressor[]) {
+		const count = stressorsList.length;
 		if (count === 0) return [];
 		
 		const positions: Array<{x: number, y: number, radius: number}> = [];
@@ -84,7 +84,7 @@
 
 		// Place bubbles one by one
 		for (let i = 0; i < count; i++) {
-			const radius = getBubbleRadius(stressors[i]);
+			const radius = getBubbleRadius(stressorsList[i]);
 			const position = findValidPosition(radius);
 			
 			if (position) {
@@ -105,11 +105,12 @@
 		return positions;
 	}
 
-	const positions = $derived(generatePositions(stressors));
+	// Make positions reactive to stressors changes
+	const positions = $derived.by(() => generatePositions(stressors));
 	
-	function handleBubbleClick(id: string) {
-		if (!readonly && onRemove) {
-			onRemove(id);
+	function handleIntensityChange(id: string, newIntensity: number) {
+		if (!readonly && onIntensityChange) {
+			onIntensityChange(id, newIntensity);
 		}
 	}
 </script>
@@ -133,7 +134,7 @@
 					mood={stressor.mood}
 					x={positions[i]?.x || 50}
 					y={positions[i]?.y || 50}
-					onclick={() => handleBubbleClick(stressor.id)}
+					onIntensityChange={(newIntensity) => handleIntensityChange(stressor.id, newIntensity)}
 					readonly={readonly}
 				/>
 			{/each}
@@ -157,7 +158,7 @@
 			</div>
 		</div>
 		{#if !readonly}
-			<p class="legend-note">Size represents stress intensity. Hover over bubbles to remove them.</p>
+			<p class="legend-note">Size represents stress intensity. Hover over bubbles to adjust intensity with + (increase) or − (decrease). At intensity 1, click 💥 to pop the bubble!</p>
 		{/if}
 	</div>
 </div>
@@ -214,13 +215,14 @@
 	}
 
 	.legend {
+		padding: 1rem;
 		background: transparent;
 		border-radius: 8px;
 	}
 
 	.legend h3 {
 		font-size: 1rem;
-		margin-bottom: 0.5rem;
+		margin-bottom: 0.75rem;
 		color: #2c2c2c;
 		font-weight: 600;
 		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
