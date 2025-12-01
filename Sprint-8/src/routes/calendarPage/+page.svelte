@@ -100,7 +100,7 @@
 				/>
 			</div>
 
-			<div class="stressor-list">
+			<!--<div class="stressor-list">
 				<h3>Stressors for this day:</h3>
 				{#each selectedEntry.stressors as stressor}
 					<div class="stressor-item">
@@ -116,7 +116,7 @@
 						<div class="stressor-mood">{stressor.mood}</div>
 					</div>
 				{/each}
-			</div>
+			</div>-->
 		</div>
 	</div>
 {/if}
