@@ -215,6 +215,7 @@
 	
 	.big-smiley {
 		font-size: 2rem;
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
 		background: linear-gradient(135deg, #ffe880 0%, #c94600 100%);
 		cursor: pointer;
 		width: 200px;
