@@ -86,7 +86,7 @@
 				<span>Calm</span>
 			</div>
 		</div>
-		<p class="legend-note">Size represents stress intensity</p>
+		<p class="legend-note">Size represents stress intensity <br>Click The Stress Bubbles to remove <br> Click the plus to add a stress bubble</p>
 	</div>
 </div>
 
@@ -142,14 +142,13 @@
 	}
 
 	.legend {
-		padding: 1rem;
 		background: transparent;
 		border-radius: 8px;
 	}
 
 	.legend h3 {
 		font-size: 1rem;
-		margin-bottom: 0.75rem;
+		margin-bottom: 0.5rem;
 		color: #2c2c2c;
 		font-weight: 600;
 		font-family: BlinkMacSystemFont, -apple-system, sans-serif;

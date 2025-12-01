@@ -60,7 +60,7 @@
 	.page-container {
 		min-height: 100vh;
 		padding: 2rem;
-		background: #fef5ee;
+		background: #f7ebe4;
 		font-family: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 
