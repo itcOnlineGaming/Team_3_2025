@@ -214,14 +214,13 @@
 	}
 
 	.legend {
-		padding: 1rem;
 		background: transparent;
 		border-radius: 8px;
 	}
 
 	.legend h3 {
 		font-size: 1rem;
-		margin-bottom: 0.75rem;
+		margin-bottom: 0.5rem;
 		color: #2c2c2c;
 		font-weight: 600;
 		font-family: BlinkMacSystemFont, -apple-system, sans-serif;

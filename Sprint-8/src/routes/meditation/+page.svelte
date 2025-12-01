@@ -18,8 +18,8 @@
   <div class="content-wrapper">
     {#if !started}
       <div class="intro">
-        <h1>You seem stressed</h1>
-        <p>Its important to stay mindful, lets take a moment to meditae</p>
+        <h1>Would You Like To Meditate?</h1>
+        <p>It's important to stay mindful, take a moment to meditate</p>
         <div class="meditation-card">
           <h2>2 Minute<br>Meditation</h2>
         </div>
@@ -62,7 +62,7 @@
   .content-wrapper {
     z-index: 2;
     width: 100%;
-    max-width: 600px;
+    max-width: 800px;
   }
 
   .intro {
