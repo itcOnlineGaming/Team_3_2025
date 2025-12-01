@@ -89,8 +89,8 @@
 		<div class="help-content">
       <h3>Steps:</h3>
         <ol>
-          <li>Click Skip To Proceed to Feedback</li>
-          <li>Click Start to Begin the Meditation</li>
+          <li>Please fill out the Feedback Form</li>
+          <li>Return Back to Home</li>
         </ol>
     </div>
   </div>
@@ -181,23 +181,25 @@
 		border: 1px solid rgba(255, 255, 255, 0.3);
 		border-radius: 20px;
 		padding-bottom: 5px;
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 
 	.header h1 {
 		font-size: 3rem;
-		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
 		color: #000000;
 		font-weight: 700;
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
 		margin-bottom: auto;
 		z-index: 2;
+		
 	}
 	
 	.header p {
 		font-size: 2rem;
 		-webkit-text-stroke: #000 0.1px;
-		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
 		color: #333;
 		z-index: 2;
+		font-style: BlinkMacSystemFont, -apple-system, sans-serif;
 	}
 	
 	/* Main content */
